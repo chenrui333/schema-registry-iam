@@ -9,7 +9,8 @@ Published to `ghcr.io/chenrui333/schema-registry-iam`.
 |---|---|
 | `Dockerfile` | Image definition — base image + IAM JAR |
 | `scripts/test-image.sh` | Local image validation (build, JAR, class loading) |
-| `.github/workflows/publish.yml` | GHCR publish on tag push and main merge |
+| `.github/workflows/publish.yml` | `main`/PR build, test, and `latest` publish |
+| `.github/workflows/release.yml` | Tag release publish + GitHub Release notes |
 | `README.md` | User-facing docs, env vars, consuming the image |
 | `justfile` | Local dev commands (`just build`, `just test`, `just clean`) |
 | `mise.toml` | Toolchain — pins `just` via mise |
@@ -54,12 +55,12 @@ Does NOT test live MSK connectivity.
 
 ## How publishing works
 
-- Push to `main` → builds, tests, publishes `latest` + `<sha>` tags
-- Push tag `v*` → publishes semver tags (`7.9.6`, `7.9`) + `latest` + `<sha>`
+- Push to `main` → `.github/workflows/publish.yml` builds, tests, publishes `latest` + `<sha>` tags
+- Push tag `v*` → `.github/workflows/release.yml` builds, tests, publishes semver tags (`7.9.6`, `7.9`) + `latest` + `<sha>`
+- Tag releases also create a GitHub Release with generated notes and prepended GHCR pull commands
 - Pull requests → build + test only (no push)
 - Published images are multi-arch (`linux/amd64`, `linux/arm64`)
-
-Workflow: `.github/workflows/publish.yml`
+- If repository-level immutable releases are enabled, published GitHub Releases become immutable after creation
 
 ## What not to change casually
 

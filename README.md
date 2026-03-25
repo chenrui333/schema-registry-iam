@@ -51,16 +51,30 @@ This verifies:
 
 It does **not** test live MSK connectivity (see [What remains unverified](#what-remains-unverified)).
 
-## GHCR publishing
+## Publishing and releases
 
-A GitHub Actions workflow at `.github/workflows/publish.yml` builds and
-publishes the image:
+GitHub Actions uses:
+
+- `.github/workflows/publish.yml` for `main` pushes and pull requests
+- `.github/workflows/release.yml` for version tags (`v*`)
 
 | Trigger | Tags produced |
 |---|---|
 | Push to `main` | `latest`, `<sha>` |
-| Push tag `v7.9.6` | `7.9.6`, `7.9`, `<sha>`, `latest` |
+| Push tag `v7.9.6` | `7.9.6`, `7.9`, `<sha>`, `latest` + GitHub Release |
 | Pull request | Build + test only (no push) |
+
+Tag releases generate GitHub release notes automatically and prepend GHCR pull
+commands such as:
+
+```bash
+docker pull ghcr.io/chenrui333/schema-registry-iam:7.9.6
+docker pull ghcr.io/chenrui333/schema-registry-iam:7.9
+docker pull ghcr.io/chenrui333/schema-registry-iam:latest
+```
+
+If GitHub release immutability is enabled for the repository, the published tag
+release becomes immutable once the workflow publishes it.
 
 ### First-time GHCR setup
 
