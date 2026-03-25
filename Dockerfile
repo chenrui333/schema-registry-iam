@@ -14,6 +14,9 @@ FROM confluentinc/cp-schema-registry:${CP_VERSION}
 
 ARG CP_VERSION
 ARG IAM_AUTH_VERSION=2.3.5
+# SHA-256 of aws-msk-iam-auth-<IAM_AUTH_VERSION>-all.jar as downloaded by
+# Docker ADD. Update when bumping IAM_AUTH_VERSION (see CLAUDE.md for how).
+ARG IAM_AUTH_JAR_SHA256=bcd6020ce1ca2c3f1a65e087057dc8c0757185ba1f169b38e0eda54b617e4225
 
 LABEL org.opencontainers.image.source="https://github.com/chenrui333/schema-registry-iam"
 LABEL org.opencontainers.image.description="Confluent Schema Registry with AWS MSK IAM auth"
@@ -23,10 +26,11 @@ LABEL org.opencontainers.image.licenses="Apache-2.0"
 # Download the aws-msk-iam-auth uber-JAR into the Schema Registry classpath.
 # The /usr/share/java/schema-registry/ directory is automatically included
 # on the Schema Registry classpath by the Confluent Docker entrypoint.
+# ADD lets Docker handle the TLS download; the RUN verifies integrity.
 ADD https://github.com/aws/aws-msk-iam-auth/releases/download/v${IAM_AUTH_VERSION}/aws-msk-iam-auth-${IAM_AUTH_VERSION}-all.jar \
     /usr/share/java/schema-registry/aws-msk-iam-auth-${IAM_AUTH_VERSION}-all.jar
 
-# Ensure the JAR is readable by the appuser.
 USER root
-RUN chmod 644 /usr/share/java/schema-registry/aws-msk-iam-auth-${IAM_AUTH_VERSION}-all.jar
+RUN echo "${IAM_AUTH_JAR_SHA256}  /usr/share/java/schema-registry/aws-msk-iam-auth-${IAM_AUTH_VERSION}-all.jar" | sha256sum -c - \
+    && chmod 644 /usr/share/java/schema-registry/aws-msk-iam-auth-${IAM_AUTH_VERSION}-all.jar
 USER appuser
