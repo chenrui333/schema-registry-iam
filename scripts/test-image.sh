@@ -1,18 +1,27 @@
 #!/usr/bin/env bash
-# Validate the schema-registry-iam Docker image.
+# Validate a schema-registry-iam Docker image.
 #
 # Checks:
-#   1. Image builds successfully
-#   2. aws-msk-iam-auth JAR exists in the expected classpath directory
-#   3. IAMLoginModule and IAMClientCallbackHandler classes are loadable
+#   1. aws-msk-iam-auth JAR exists in the expected classpath directory
+#   2. IAMLoginModule and IAMClientCallbackHandler classes are loadable
 #
 # Usage:
-#   ./scripts/test-image.sh [image-tag]
+#   ./scripts/test-image.sh [--skip-build] [image-tag]
+#
+# --skip-build  Validate an already-built image without rebuilding.
+#               Use this in CI to test the exact image that was built
+#               by a prior step.
 #
 # This does NOT test live MSK connectivity — that requires a running
 # MSK cluster with IAM auth enabled.
 
 set -euo pipefail
+
+SKIP_BUILD=false
+if [[ "${1:-}" == "--skip-build" ]]; then
+  SKIP_BUILD=true
+  shift
+fi
 
 IMAGE="${1:-schema-registry-iam:test}"
 PASS=0
@@ -21,11 +30,13 @@ FAIL=0
 pass() { PASS=$((PASS + 1)); echo "PASS: $1"; }
 fail() { FAIL=$((FAIL + 1)); echo "FAIL: $1" >&2; }
 
-echo "=== Building image as ${IMAGE} ==="
-docker build -t "${IMAGE}" . || { fail "docker build"; echo "Build failed — aborting."; exit 1; }
-pass "docker build"
+if [[ "${SKIP_BUILD}" == "false" ]]; then
+  echo "=== Building image as ${IMAGE} ==="
+  docker build -t "${IMAGE}" . || { fail "docker build"; echo "Build failed — aborting."; exit 1; }
+  pass "docker build"
+  echo ""
+fi
 
-echo ""
 echo "=== Checking aws-msk-iam-auth JAR ==="
 JAR_LS=$(docker run --rm --entrypoint sh "${IMAGE}" -c \
   'ls -1 /usr/share/java/schema-registry/aws-msk-iam-auth-*-all.jar 2>/dev/null')
