@@ -11,6 +11,9 @@ Published to `ghcr.io/chenrui333/schema-registry-iam`.
 | `scripts/test-image.sh` | Local image validation (build, JAR, class loading) |
 | `.github/workflows/publish.yml` | GHCR publish on tag push and main merge |
 | `README.md` | User-facing docs, env vars, consuming the image |
+| `justfile` | Local dev commands (`just build`, `just test`, `just clean`) |
+| `mise.toml` | Toolchain — pins `just` via mise |
+| `renovate.json` | Automated dependency updates for base image and IAM JAR |
 
 ## How to update to a new upstream release
 
@@ -23,8 +26,10 @@ Published to `ghcr.io/chenrui333/schema-registry-iam`.
 ## How to run local validation
 
 ```bash
-./scripts/test-image.sh
+just test
 ```
+
+Or directly: `./scripts/test-image.sh`
 
 Validates: image builds, JAR present, IAM classes loadable.
 Does NOT test live MSK connectivity.

@@ -35,13 +35,13 @@ No upstream source is forked or patched.
 ## Build locally
 
 ```bash
-docker build -t schema-registry-iam .
+just build
 ```
 
 ## Validate locally
 
 ```bash
-./scripts/test-image.sh
+just test
 ```
 
 This verifies:
@@ -118,10 +118,15 @@ MSK cluster and are **not** tested here:
 
 ## Updating versions
 
+[Renovate](https://docs.renovatebot.com/) is configured to automatically open
+PRs when new versions of the base image or `aws-msk-iam-auth` are released.
+
+To update manually:
+
 1. Check the latest [cp-schema-registry tags on Docker Hub](https://hub.docker.com/r/confluentinc/cp-schema-registry/tags)
 2. Check the latest [aws-msk-iam-auth releases](https://github.com/aws/aws-msk-iam-auth/releases)
 3. Update `CP_VERSION` and/or `IAM_AUTH_VERSION` defaults in `Dockerfile`
-4. Run `./scripts/test-image.sh` to validate
+4. Run `just test` to validate
 5. Tag and push: `git tag v<CP_VERSION> && git push --tags`
 
 ## License
