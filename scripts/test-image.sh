@@ -38,16 +38,20 @@ fi
 
 echo ""
 echo "=== Verifying IAM classes on classpath ==="
+# When java runs a class that exists but has no suitable main(), it prints
+# "Main method not found in class ..." — this confirms the class loaded.
+# Any load failure (ClassNotFoundException, NoClassDefFoundError,
+# UnsupportedClassVersionError, LinkageError) produces different output.
+# We check for the positive "Main method not found" signal.
 for CLASS in software.amazon.msk.auth.iam.IAMLoginModule \
              software.amazon.msk.auth.iam.IAMClientCallbackHandler; do
   OUTPUT=$(docker run --rm --entrypoint sh "${IMAGE}" -c \
     "java -cp '/usr/share/java/schema-registry/*' ${CLASS} 2>&1 || true")
-  # If the class is found, java will try to run it and fail with a usage/main error,
-  # NOT a ClassNotFoundException. Check for ClassNotFoundException to detect failure.
-  if echo "${OUTPUT}" | grep -q "ClassNotFoundException"; then
-    fail "class not loadable: ${CLASS}"
-  else
+  if echo "${OUTPUT}" | grep -q "Main method not found"; then
     pass "class loadable: ${CLASS}"
+  else
+    fail "class not loadable: ${CLASS}"
+    echo "  Output: $(echo "${OUTPUT}" | head -3)" >&2
   fi
 done
 
