@@ -1,5 +1,8 @@
 # schema-registry-iam
 
+[![Publish](https://github.com/chenrui333/schema-registry-iam/actions/workflows/publish.yml/badge.svg)](https://github.com/chenrui333/schema-registry-iam/actions/workflows/publish.yml)
+[![Release](https://github.com/chenrui333/schema-registry-iam/actions/workflows/release.yml/badge.svg)](https://github.com/chenrui333/schema-registry-iam/actions/workflows/release.yml)
+
 Custom Docker image that extends
 [`confluentinc/cp-schema-registry`](https://hub.docker.com/r/confluentinc/cp-schema-registry)
 with the [aws-msk-iam-auth](https://github.com/aws/aws-msk-iam-auth) library,
