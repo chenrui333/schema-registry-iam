@@ -95,23 +95,26 @@ jobs:
             exit 0
           fi
 
-          notes=$(cat <<EOF
+          notes_template=$(cat <<'EOF'
           ## Container image
 
           Pull this release from GHCR:
 
-          \`\`\`bash
-          docker pull ${IMAGE_NAME}:${version}
-          \`\`\`
+          ```bash
+          docker pull __IMAGE__:__VERSION__
+          ```
 
           Additional published tags for this release:
 
-          \`\`\`bash
-          docker pull ${IMAGE_NAME}:${minor}
-          docker pull ${IMAGE_NAME}:latest
-          \`\`\`
+          ```bash
+          docker pull __IMAGE__:__MINOR__
+          docker pull __IMAGE__:latest
+          ```
           EOF
           )
+          notes="${notes_template//__IMAGE__/${IMAGE_NAME}}"
+          notes="${notes//__VERSION__/${version}}"
+          notes="${notes//__MINOR__/${minor}}"
 
           gh release create "${tag}" \
             --repo "${GITHUB_REPOSITORY}" \
