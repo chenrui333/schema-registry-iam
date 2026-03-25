@@ -20,18 +20,22 @@ Published to `ghcr.io/chenrui333/schema-registry-iam`.
 1. Check latest `confluentinc/cp-schema-registry` tag on Docker Hub
 2. Check latest `aws-msk-iam-auth` release on GitHub
 3. Update `CP_VERSION` and/or `IAM_AUTH_VERSION` ARG defaults in `Dockerfile`
-4. If `IAM_AUTH_VERSION` changed, update `IAM_AUTH_JAR_SHA256`. The checksum
+4. If `CP_VERSION` changed, update `CP_DIGEST`:
+   ```bash
+   docker buildx imagetools inspect confluentinc/cp-schema-registry:<VER> | grep Digest
+   ```
+5. If `IAM_AUTH_VERSION` changed, update `IAM_AUTH_JAR_SHA256`. The checksum
    must match what Docker `ADD` downloads (not host curl, which may differ
    due to encoding). Get it by building a probe image:
    ```bash
    docker build --no-cache -f - . <<'EOF'
-   FROM confluentinc/cp-schema-registry:7.9.6
-   ADD https://github.com/aws/aws-msk-iam-auth/releases/download/v<VER>/aws-msk-iam-auth-<VER>-all.jar /tmp/iam.jar
+   FROM confluentinc/cp-schema-registry:<VER>
+   ADD https://github.com/aws/aws-msk-iam-auth/releases/download/v<IAM_VER>/aws-msk-iam-auth-<IAM_VER>-all.jar /tmp/iam.jar
    RUN sha256sum /tmp/iam.jar
    EOF
    ```
-5. Run `just test` — all checks must pass
-6. Commit, tag (`v<CP_VERSION>`), and push
+6. Run `just test` — all checks must pass
+7. Commit, tag (`v<CP_VERSION>`), and push
 
 Renovate auto-opens PRs for version bumps. When it bumps `IAM_AUTH_VERSION`,
 CI will fail until `IAM_AUTH_JAR_SHA256` is updated (this is intentional —
@@ -61,6 +65,9 @@ Workflow: `.github/workflows/publish.yml`
 
 - **`CP_VERSION` default** — this is the upstream base image version. Only bump
   after verifying the new version exists on Docker Hub and passes validation.
+- **`CP_DIGEST`** — digest-pin for the base image. Must be updated whenever
+  `CP_VERSION` changes. The digest ensures builds are reproducible even if
+  the upstream tag is re-pushed.
 - **`IAM_AUTH_VERSION` default** — the aws-msk-iam-auth release. Must update
   `IAM_AUTH_JAR_SHA256` in the same commit.
 - **`IAM_AUTH_JAR_SHA256`** — integrity check for the downloaded JAR. Build
