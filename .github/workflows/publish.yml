@@ -1,0 +1,69 @@
+name: Publish to GHCR
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+
+env:
+  IMAGE_NAME: ghcr.io/chenrui333/schema-registry-iam
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t ${{ env.IMAGE_NAME }}:test .
+
+      - name: Validate image
+        run: ./scripts/test-image.sh ${{ env.IMAGE_NAME }}:test
+
+  publish:
+    needs: build-and-test
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_NAME }}
+          tags: |
+            # tag event: v7.9.6 -> 7.9.6
+            type=semver,pattern={{version}}
+            # tag event: v7.9.6 -> 7.9
+            type=semver,pattern={{major}}.{{minor}}
+            # main branch -> latest
+            type=raw,value=latest,enable={{is_default_branch}}
+            # always: short SHA
+            type=sha,prefix=
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
