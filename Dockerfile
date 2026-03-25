@@ -10,7 +10,12 @@
 #   docker build --build-arg CP_VERSION=7.9.6 --build-arg IAM_AUTH_VERSION=2.3.5 .
 
 ARG CP_VERSION=7.9.6
-FROM confluentinc/cp-schema-registry:${CP_VERSION}
+# Digest of the manifest list for confluentinc/cp-schema-registry:${CP_VERSION}.
+# Pin to digest so builds are reproducible even if the tag is re-pushed.
+# Update when bumping CP_VERSION:
+#   docker buildx imagetools inspect confluentinc/cp-schema-registry:<VER> | grep Digest
+ARG CP_DIGEST=sha256:1efa1ed67e6937e4c82ae34d761eee7354e6b79df5d459ff387735af0a2849d1
+FROM confluentinc/cp-schema-registry:${CP_VERSION}@${CP_DIGEST}
 
 ARG CP_VERSION
 ARG IAM_AUTH_VERSION=2.3.5
@@ -30,6 +35,7 @@ LABEL org.opencontainers.image.licenses="Apache-2.0"
 ADD https://github.com/aws/aws-msk-iam-auth/releases/download/v${IAM_AUTH_VERSION}/aws-msk-iam-auth-${IAM_AUTH_VERSION}-all.jar \
     /usr/share/java/schema-registry/aws-msk-iam-auth-${IAM_AUTH_VERSION}-all.jar
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 USER root
 RUN echo "${IAM_AUTH_JAR_SHA256}  /usr/share/java/schema-registry/aws-msk-iam-auth-${IAM_AUTH_VERSION}-all.jar" | sha256sum -c - \
     && chmod 644 /usr/share/java/schema-registry/aws-msk-iam-auth-${IAM_AUTH_VERSION}-all.jar
