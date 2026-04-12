@@ -1,8 +1,10 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", "helpers:pinGitHubActionDigests"],
+  "extends": ["config:best-practices"],
   "automerge": true,
   "automergeType": "pr",
+  "platformAutomerge": true,
+  "minimumReleaseAge": "7 days",
   "customManagers": [
     {
       "customType": "regex",
