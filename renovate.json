@@ -9,7 +9,9 @@
     {
       "customType": "regex",
       "description": "Update aws-msk-iam-auth JAR version in Dockerfile. NOTE: bumping this version requires updating IAM_AUTH_JAR_SHA256 manually.",
-      "fileMatch": ["^Dockerfile$"],
+      "managerFilePatterns": [
+        "/^Dockerfile$/"
+      ],
       "matchStrings": [
         "ARG IAM_AUTH_VERSION=(?<currentValue>\\S+)"
       ],
