@@ -1,0 +1,27 @@
+CHANGELOG.md
+  s_4b91df15ce9da8::t_8dabf2220f27c4 10-11
+  s_4b91df15ce9da8::t_aac0fc44a638c3 58-59
+README.md
+  s_4b91df15ce9da8::t_0944ad77778a89 67,70-73,78-79
+  s_4b91df15ce9da8::t_7fb57e221ba7e5 17,23
+  s_4b91df15ce9da8::t_bff06b78b86b5d 106
+CLAUDE.md
+  s_4b91df15ce9da8::t_4f13b61f38e01c 15-18
+  s_4b91df15ce9da8::t_9f14bac495b525 61-62
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "9e2a9d55c554efcb65364d9f1d4b92c5b72fe631",
+  "prompts": {},
+  "sessions": {
+    "s_4b91df15ce9da8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "78a2a149-5942-482a-85d5-21b43d7c7a3d",
+        "model": "unknown"
+      },
+      "human_author": "Rui Chen <rui@chenrui.dev>"
+    }
+  }
+}
