@@ -14,8 +14,8 @@ Versioning: [Semantic Versioning](https://semver.org/) — version tracks `CP_VE
 - Dev: `just lint` recipe running `shellcheck` and `hadolint` ([#14](https://github.com/chenrui333/schema-registry-iam/pull/14))
 - Dev: Pin `shellcheck 0.11.0` and `hadolint 2.14.0` in `mise.toml` ([#14](https://github.com/chenrui333/schema-registry-iam/pull/14))
 - Renovate: Track `CP_VERSION` automatically via Docker Hub datasource ([#14](https://github.com/chenrui333/schema-registry-iam/pull/14))
-- Docs: Workflow status badges in README
-- CI: Tag release workflow with automated GitHub Release notes
+- Docs: Workflow status badges in README ([194b878](https://github.com/chenrui333/schema-registry-iam/commit/194b878))
+- CI: Tag release workflow with automated GitHub Release notes ([5495b10](https://github.com/chenrui333/schema-registry-iam/commit/5495b10))
 
 ### Changed
 
