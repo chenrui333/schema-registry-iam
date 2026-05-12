@@ -7,6 +7,8 @@ Versioning: [Semantic Versioning](https://semver.org/) — version tracks `CP_VE
 
 ## [Unreleased]
 
+## [8.2.0] - 2026-05-12
+
 ### Added
 
 - CI: CP_DIGEST consistency gate in `publish.yml` and `release.yml` — fails fast with the correct digest if the Dockerfile is stale ([#14](https://github.com/chenrui333/schema-registry-iam/pull/14))
@@ -53,5 +55,6 @@ Versioning: [Semantic Versioning](https://semver.org/) — version tracks `CP_VE
 
 ---
 
-[Unreleased]: https://github.com/chenrui333/schema-registry-iam/compare/v7.9.6...HEAD
+[Unreleased]: https://github.com/chenrui333/schema-registry-iam/compare/v8.2.0...HEAD
+[8.2.0]: https://github.com/chenrui333/schema-registry-iam/releases/tag/v8.2.0
 [7.9.6]: https://github.com/chenrui333/schema-registry-iam/releases/tag/v7.9.6

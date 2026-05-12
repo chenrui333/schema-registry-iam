@@ -14,13 +14,13 @@ Published to **`ghcr.io/chenrui333/schema-registry-iam`**.
 
 | Component | Version | Source |
 |---|---|---|
-| Confluent Platform (Schema Registry) | `7.9.6` | [Docker Hub](https://hub.docker.com/r/confluentinc/cp-schema-registry) |
+| Confluent Platform (Schema Registry) | `8.2.0` | [Docker Hub](https://hub.docker.com/r/confluentinc/cp-schema-registry) |
 | aws-msk-iam-auth | `2.3.5` | [GitHub releases](https://github.com/aws/aws-msk-iam-auth/releases) |
 
 Override at build time:
 
 ```bash
-docker build --build-arg CP_VERSION=7.9.6 --build-arg IAM_AUTH_VERSION=2.3.5 .
+docker build --build-arg CP_VERSION=8.2.0 --build-arg IAM_AUTH_VERSION=2.3.5 .
 ```
 
 ## How the image is built
@@ -64,15 +64,19 @@ GitHub Actions uses:
 | Trigger | Tags produced |
 |---|---|
 | Push to `main` | `latest`, `<sha>` |
-| Push tag `v7.9.6` | `7.9.6`, `7.9`, `<sha>`, `latest` + GitHub Release |
+| Push tag `v<CP_VERSION>` | `<CP_VERSION>`, `<major>.<minor>`, `<sha>`, `latest` + GitHub Release |
 | Pull request | Build + test only (no push) |
+
+**Release tags track the upstream `CP_VERSION`** (e.g. tag `v8.2.0` → image
+tagged `8.2.0`, `8.2`, `latest`, `<sha>`). This makes it unambiguous which
+Confluent Platform version the image contains.
 
 Tag releases generate GitHub release notes automatically and prepend GHCR pull
 commands such as:
 
 ```bash
-docker pull ghcr.io/chenrui333/schema-registry-iam:7.9.6
-docker pull ghcr.io/chenrui333/schema-registry-iam:7.9
+docker pull ghcr.io/chenrui333/schema-registry-iam:8.2.0
+docker pull ghcr.io/chenrui333/schema-registry-iam:8.2
 docker pull ghcr.io/chenrui333/schema-registry-iam:latest
 ```
 
@@ -99,7 +103,7 @@ docker pull ghcr.io/chenrui333/schema-registry-iam:latest
 Or pin to a specific version:
 
 ```bash
-docker pull ghcr.io/chenrui333/schema-registry-iam:7.9.6
+docker pull ghcr.io/chenrui333/schema-registry-iam:8.2.0
 ```
 
 ## Required IAM environment variables
