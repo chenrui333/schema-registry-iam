@@ -23,14 +23,14 @@ Tags track `CP_VERSION`: `v<CP_VERSION>` (e.g. `v8.2.0`).
    just test
    ```
 
-4. **Update `CHANGELOG.md`**: rename `## [Unreleased]` to `## [<version>] - <YYYY-MM-DD>`,
+4. **Update `CHANGELOG.md`**: rename `## [Unreleased]` to `## [<CP_VERSION>] - <YYYY-MM-DD>`,
    then add a new empty `## [Unreleased]` section at the top.
 
 ## Cut the release
 
 ```bash
-git tag v<version>
-git push origin v<version>
+git tag v<CP_VERSION>
+git push origin v<CP_VERSION>
 ```
 
 CI handles everything from here.
@@ -41,7 +41,7 @@ On a `v*` tag push, `release.yml`:
 
 1. Verifies `CP_DIGEST` matches the registry
 2. Builds and validates `linux/amd64` and `linux/arm64` images
-3. Pushes to GHCR with tags: `<version>`, `<major>.<minor>`, `latest`, `<sha>`
+3. Pushes to GHCR with tags: `<CP_VERSION>`, `<major>.<minor>`, `latest`, `<sha>`
 4. Creates a GitHub Release with auto-generated notes prepended with GHCR pull commands
 
 ## Notes
