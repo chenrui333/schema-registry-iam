@@ -24,7 +24,7 @@ Tags track `CP_VERSION`: `v<CP_VERSION>` (e.g. `v8.2.0`).
 4. **Update `CHANGELOG.md`**: rename `## [Unreleased]` to `## [<CP_VERSION>] - <YYYY-MM-DD>`,
    add a new empty `## [Unreleased]` section at the top, and update the comparison
    links footer at the bottom:
-   ```
+   ```text
    [Unreleased]: https://github.com/chenrui333/schema-registry-iam/compare/v<CP_VERSION>...HEAD
    [<CP_VERSION>]: https://github.com/chenrui333/schema-registry-iam/releases/tag/v<CP_VERSION>
    ```
