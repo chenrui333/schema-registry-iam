@@ -13,6 +13,11 @@ test: build
 validate image_ref:
     ./scripts/test-image.sh --skip-build {{ image_ref }}
 
+# Run shellcheck and hadolint (requires shellcheck and hadolint on PATH)
+lint:
+    shellcheck scripts/test-image.sh
+    hadolint Dockerfile
+
 # Remove the test image
 clean:
     docker rmi {{ image }}:{{ tag }} 2>/dev/null || true

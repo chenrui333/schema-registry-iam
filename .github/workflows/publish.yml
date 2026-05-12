@@ -9,9 +9,9 @@ on:
 env:
   IMAGE_NAME: ghcr.io/chenrui333/schema-registry-iam
 
-permissions:
-  contents: read
-  packages: write
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-and-publish:

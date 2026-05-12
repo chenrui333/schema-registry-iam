@@ -41,7 +41,7 @@ echo "=== Checking aws-msk-iam-auth JAR ==="
 JAR_LS=$(docker run --rm --entrypoint sh "${IMAGE}" -c \
   'ls -1 /usr/share/java/schema-registry/aws-msk-iam-auth-*-all.jar 2>/dev/null')
 
-if [ -n "${JAR_LS}" ]; then
+if [[ -n "${JAR_LS}" ]]; then
   pass "JAR present: ${JAR_LS}"
 else
   fail "aws-msk-iam-auth JAR not found in /usr/share/java/schema-registry/"

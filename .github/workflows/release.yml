@@ -7,10 +7,6 @@ on:
 env:
   IMAGE_NAME: ghcr.io/chenrui333/schema-registry-iam
 
-permissions:
-  contents: write
-  packages: write
-
 jobs:
   release:
     runs-on: ubuntu-latest
