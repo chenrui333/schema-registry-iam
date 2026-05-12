@@ -1,0 +1,19 @@
+scripts/test-image.sh
+  s_4b91df15ce9da8::t_709af320152594 42
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "f2bcd35594337052ca0528f4b365b7e23680e027",
+  "prompts": {},
+  "sessions": {
+    "s_4b91df15ce9da8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "78a2a149-5942-482a-85d5-21b43d7c7a3d",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Rui Chen <rui@chenrui.dev>"
+    }
+  }
+}
