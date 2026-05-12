@@ -8,10 +8,8 @@ Tags track `CP_VERSION`: `v<CP_VERSION>` (e.g. `v8.2.0`).
 
 1. **Sync `CP_VERSION` and `CP_DIGEST`** in `Dockerfile`
 
-   The CI digest gate fails if they diverge. To get the current digest:
-   ```bash
-   docker buildx imagetools inspect confluentinc/cp-schema-registry:<CP_VERSION> | grep Digest
-   ```
+   The CI digest gate fails if they diverge.
+   See `CLAUDE.md` for how to get the current digest.
 
 2. **Sync `IAM_AUTH_VERSION` and `IAM_AUTH_JAR_SHA256`** in `Dockerfile`
 
@@ -20,7 +18,7 @@ Tags track `CP_VERSION`: `v<CP_VERSION>` (e.g. `v8.2.0`).
 
 3. **Run local validation**:
    ```bash
-   just test
+   just lint && just test
    ```
 
 4. **Update `CHANGELOG.md`**: rename `## [Unreleased]` to `## [<CP_VERSION>] - <YYYY-MM-DD>`,
