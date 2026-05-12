@@ -14,7 +14,7 @@ ARG CP_VERSION=8.2.0
 # Pin to digest so builds are reproducible even if the tag is re-pushed.
 # Update when bumping CP_VERSION:
 #   docker buildx imagetools inspect confluentinc/cp-schema-registry:<VER> | grep Digest
-ARG CP_DIGEST=sha256:9d6e55e7e141274695c730eb880cc86cf0d38936295337d2d0ef0856b4e85b75
+ARG CP_DIGEST=sha256:7ec0b15c6d5a64aa95b4201db5231ea58952b035869b95bed45624468ce10b34
 FROM confluentinc/cp-schema-registry:${CP_VERSION}@${CP_DIGEST}
 
 ARG CP_VERSION

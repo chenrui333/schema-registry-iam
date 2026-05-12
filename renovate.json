@@ -18,6 +18,24 @@
       "depNameTemplate": "aws/aws-msk-iam-auth",
       "datasourceTemplate": "github-releases",
       "extractVersionTemplate": "^v(?<version>.+)$"
+    },
+    {
+      "customType": "regex",
+      "description": "Update Confluent Schema Registry base image version in Dockerfile. NOTE: bumping CP_VERSION also requires updating CP_DIGEST manually.",
+      "fileMatch": ["^Dockerfile$"],
+      "matchStrings": [
+        "ARG CP_VERSION=(?<currentValue>\\S+)"
+      ],
+      "depNameTemplate": "confluentinc/cp-schema-registry",
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "semver"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchManagers": ["custom.regex"],
+      "automerge": false,
+      "description": "Regex-managed versions require manual digest/checksum updates; never automerge"
     }
   ]
 }
