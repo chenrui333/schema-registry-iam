@@ -1,0 +1,21 @@
+CHANGELOG.md
+  s_4b91df15ce9da8::t_ad4ae8bb529654 1-52
+RELEASE.md
+  s_4b91df15ce9da8::t_8757576f83231a 1-52
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "a9560a4edfa15cce2e68ec4cbceaaca5fdf2a458",
+  "prompts": {},
+  "sessions": {
+    "s_4b91df15ce9da8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "78a2a149-5942-482a-85d5-21b43d7c7a3d",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Rui Chen <rui@chenrui.dev>"
+    }
+  }
+}
