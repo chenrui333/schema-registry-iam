@@ -33,7 +33,7 @@
   ],
   "packageRules": [
     {
-      "matchManagers": ["regex"],
+      "matchManagers": ["custom.regex"],
       "automerge": false,
       "description": "Regex-managed versions require manual digest/checksum updates; never automerge"
     }
