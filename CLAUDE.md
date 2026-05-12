@@ -12,8 +12,10 @@ Published to `ghcr.io/chenrui333/schema-registry-iam`.
 | `.github/workflows/publish.yml` | `main`/PR build, test, and `latest` publish |
 | `.github/workflows/release.yml` | Tag release publish + GitHub Release notes |
 | `README.md` | User-facing docs, env vars, consuming the image |
-| `justfile` | Local dev commands (`just build`, `just test`, `just clean`) |
-| `mise.toml` | Toolchain — pins `just` via mise |
+| `CHANGELOG.md` | Release history following Keep a Changelog format |
+| `RELEASE.md` | Release runbook — pre-release checklist and tag instructions |
+| `justfile` | Local dev commands (`just build`, `just test`, `just lint`, `just clean`) |
+| `mise.toml` | Toolchain — pins `just`, `shellcheck`, `hadolint` via mise |
 | `renovate.json` | Automated dependency updates for base image and IAM JAR |
 
 ## How to update to a new upstream release
@@ -56,7 +58,8 @@ Does NOT test live MSK connectivity.
 ## How publishing works
 
 - Push to `main` → `.github/workflows/publish.yml` builds, tests, publishes `latest` + `<sha>` tags
-- Push tag `v*` → `.github/workflows/release.yml` builds, tests, publishes semver tags (`7.9.6`, `7.9`) + `latest` + `<sha>`
+- Push tag `v*` → `.github/workflows/release.yml` builds, tests, publishes semver tags (`8.2.0`, `8.2`) + `latest` + `<sha>`
+- **Tag convention**: tags track `CP_VERSION` — `v<CP_VERSION>` (e.g. `v8.2.0`). This keeps the image tag and Confluent Platform version in sync.
 - Tag releases also create a GitHub Release with generated notes and prepended GHCR pull commands
 - Pull requests → build + test only (no push)
 - Published images are multi-arch (`linux/amd64`, `linux/arm64`)
