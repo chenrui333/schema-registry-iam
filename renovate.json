@@ -22,7 +22,9 @@
     {
       "customType": "regex",
       "description": "Update Confluent Schema Registry base image version in Dockerfile. NOTE: bumping CP_VERSION also requires updating CP_DIGEST manually.",
-      "fileMatch": ["^Dockerfile$"],
+      "managerFilePatterns": [
+        "/^Dockerfile$/"
+      ],
       "matchStrings": [
         "ARG CP_VERSION=(?<currentValue>\\S+)"
       ],
