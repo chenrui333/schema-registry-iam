@@ -1,0 +1,21 @@
+.github/workflows/publish.yml
+  s_4b91df15ce9da8::t_995b025812d366 12-13
+  s_4b91df15ce9da8::t_5ff6896bcad1f6 32-37,39-47
+  s_4b91df15ce9da8::t_0131ccbb60073f 14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "bf35be23961a4ebce57b06812fb1819c8fe9ab5a",
+  "prompts": {},
+  "sessions": {
+    "s_4b91df15ce9da8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "78a2a149-5942-482a-85d5-21b43d7c7a3d",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Rui Chen <rui@chenrui.dev>"
+    }
+  }
+}
