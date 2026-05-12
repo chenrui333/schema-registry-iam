@@ -1,0 +1,27 @@
+scripts/test-image.sh
+  s_4b91df15ce9da8::t_c1f04096d7ed86 44
+.gitignore
+  s_4b91df15ce9da8::t_bd66fd8565c820 3
+.github/workflows/publish.yml
+  s_4b91df15ce9da8::t_995b025812d366 12-14
+renovate.json
+  s_4b91df15ce9da8::t_c55a2b25d51b36 19-36
+justfile
+  s_4b91df15ce9da8::t_500684a6fca86b 16-20
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "6c3466b1fb9bcdd997c161f2c230277f8a17444c",
+  "prompts": {},
+  "sessions": {
+    "s_4b91df15ce9da8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "78a2a149-5942-482a-85d5-21b43d7c7a3d",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Rui Chen <rui@chenrui.dev>"
+    }
+  }
+}
