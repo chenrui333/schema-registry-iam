@@ -40,7 +40,7 @@ jobs:
           echo "CP_DIGEST verified: ${pinned}"
 
       - name: Build image (amd64)
-        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v7.1.0
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7.2.0
         with:
           context: .
           platforms: linux/amd64
@@ -51,7 +51,7 @@ jobs:
         run: ./scripts/test-image.sh --skip-build ${{ env.IMAGE_NAME }}:test-amd64
 
       - name: Build image (arm64)
-        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v7.1.0
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7.2.0
         with:
           context: .
           platforms: linux/arm64
@@ -84,7 +84,7 @@ jobs:
             type=sha,prefix=
 
       - name: Build and push (multi-arch)
-        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v7.1.0
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7.2.0
         with:
           context: .
           platforms: linux/amd64,linux/arm64
