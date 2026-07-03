@@ -1,0 +1,20 @@
+RELEASE.md
+  s_c7b873b3c47c21::t_75e47f64fe4487 34-36,53-67
+  s_c7b873b3c47c21::t_c9dd4cdd8017f8 68
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "5705b88ecf7f58759e207431488cfc0e8ad1cd57",
+  "prompts": {},
+  "sessions": {
+    "s_c7b873b3c47c21": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f28c3-c19e-7710-ae94-eb7c3656521c",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Rui Chen <rui@chenrui.dev>"
+    }
+  }
+}
