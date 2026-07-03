@@ -1,0 +1,19 @@
+Dockerfile
+  s_c7b873b3c47c21::t_cea5d2dc65cd09 24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "38108a1011f96ab769e3c1d44e0c3226e513da31",
+  "prompts": {},
+  "sessions": {
+    "s_c7b873b3c47c21": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f28c3-c19e-7710-ae94-eb7c3656521c",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Rui Chen <rui@chenrui.dev>"
+    }
+  }
+}
