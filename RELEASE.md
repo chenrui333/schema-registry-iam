@@ -31,6 +31,9 @@ Tags track `CP_VERSION`: `v<CP_VERSION>` (e.g. `v8.2.0`).
 
 ## Cut the release
 
+Commit and push the `CHANGELOG.md` release-prep update to `main` before tagging.
+The release tag should point at the commit that contains the final changelog entry.
+
 ```bash
 git tag v<CP_VERSION>
 git push origin v<CP_VERSION>
@@ -46,6 +49,22 @@ On a `v*` tag push, `release.yml`:
 2. Builds and validates `linux/amd64` and `linux/arm64` images
 3. Pushes to GHCR with tags: `<CP_VERSION>`, `<major>.<minor>`, `latest`, `<sha>`
 4. Creates a GitHub Release with auto-generated notes prepended with GHCR pull commands
+
+## Verify the release
+
+After pushing the tag:
+
+1. Confirm the `release.yml` tag run completed successfully.
+2. Confirm the GitHub Release exists and is marked latest:
+   ```bash
+   gh release list --limit 5
+   gh release view v<CP_VERSION>
+   ```
+3. Confirm GHCR published the expected tags: `<CP_VERSION>`, `<major>.<minor>`,
+   `latest`, and the short commit SHA.
+
+Do not create another release tag for docs-only release guide updates.
+Merging those updates still triggers the normal `main` publish workflow.
 
 ## Notes
 
