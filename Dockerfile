@@ -9,12 +9,12 @@
 # Override versions at build time:
 #   docker build --build-arg CP_VERSION=7.9.6 --build-arg IAM_AUTH_VERSION=2.3.5 .
 
-ARG CP_VERSION=8.2.0
+ARG CP_VERSION=8.3.0
 # Digest of the manifest list for confluentinc/cp-schema-registry:${CP_VERSION}.
 # Pin to digest so builds are reproducible even if the tag is re-pushed.
 # Update when bumping CP_VERSION:
 #   docker buildx imagetools inspect confluentinc/cp-schema-registry:<VER> | grep Digest
-ARG CP_DIGEST=sha256:7ec0b15c6d5a64aa95b4201db5231ea58952b035869b95bed45624468ce10b34
+ARG CP_DIGEST=sha256:d9e6f3d1142598906a51dca66b8b1251bb0bc24ba7faae1836d7c642fc4d70ea
 FROM confluentinc/cp-schema-registry:${CP_VERSION}@${CP_DIGEST}
 
 ARG CP_VERSION
