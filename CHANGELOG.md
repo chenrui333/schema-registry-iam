@@ -7,6 +7,16 @@ Versioning: [Semantic Versioning](https://semver.org/) — version tracks `CP_VE
 
 ## [Unreleased]
 
+## [8.3.0] - 2026-07-03
+
+### Changed
+
+- Bump `confluentinc/cp-schema-registry` base image from `8.2.0` to `8.3.0` and refresh `CP_DIGEST` ([#20](https://github.com/chenrui333/schema-registry-iam/pull/20))
+- Bump `aws-msk-iam-auth` from `2.3.5` to `2.3.7` and refresh `IAM_AUTH_JAR_SHA256` ([#18](https://github.com/chenrui333/schema-registry-iam/pull/18))
+- Bump `just` from `1.50.0` to `1.54.0` ([#19](https://github.com/chenrui333/schema-registry-iam/pull/19), [#27](https://github.com/chenrui333/schema-registry-iam/pull/27), [#28](https://github.com/chenrui333/schema-registry-iam/pull/28), [#30](https://github.com/chenrui333/schema-registry-iam/pull/30))
+- Bump pinned GitHub Actions for checkout and Docker build/publish workflows ([#21](https://github.com/chenrui333/schema-registry-iam/pull/21), [#22](https://github.com/chenrui333/schema-registry-iam/pull/22), [#23](https://github.com/chenrui333/schema-registry-iam/pull/23), [#24](https://github.com/chenrui333/schema-registry-iam/pull/24), [#25](https://github.com/chenrui333/schema-registry-iam/pull/25), [#26](https://github.com/chenrui333/schema-registry-iam/pull/26), [#29](https://github.com/chenrui333/schema-registry-iam/pull/29))
+- Migrate Renovate custom manager config to the current `managerFilePatterns` syntax ([#15](https://github.com/chenrui333/schema-registry-iam/pull/15))
+
 ## [8.2.0] - 2026-05-12
 
 ### Added
@@ -55,6 +65,7 @@ Versioning: [Semantic Versioning](https://semver.org/) — version tracks `CP_VE
 
 ---
 
-[Unreleased]: https://github.com/chenrui333/schema-registry-iam/compare/v8.2.0...HEAD
+[Unreleased]: https://github.com/chenrui333/schema-registry-iam/compare/v8.3.0...HEAD
+[8.3.0]: https://github.com/chenrui333/schema-registry-iam/releases/tag/v8.3.0
 [8.2.0]: https://github.com/chenrui333/schema-registry-iam/releases/tag/v8.2.0
 [7.9.6]: https://github.com/chenrui333/schema-registry-iam/releases/tag/v7.9.6
