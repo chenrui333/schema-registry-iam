@@ -18,10 +18,10 @@ ARG CP_DIGEST=sha256:7ec0b15c6d5a64aa95b4201db5231ea58952b035869b95bed45624468ce
 FROM confluentinc/cp-schema-registry:${CP_VERSION}@${CP_DIGEST}
 
 ARG CP_VERSION
-ARG IAM_AUTH_VERSION=2.3.5
+ARG IAM_AUTH_VERSION=2.3.7
 # SHA-256 of aws-msk-iam-auth-<IAM_AUTH_VERSION>-all.jar as downloaded by
 # Docker ADD. Update when bumping IAM_AUTH_VERSION (see CLAUDE.md for how).
-ARG IAM_AUTH_JAR_SHA256=bcd6020ce1ca2c3f1a65e087057dc8c0757185ba1f169b38e0eda54b617e4225
+ARG IAM_AUTH_JAR_SHA256=a46aff030edf9451c098ffb2a73938a9edec6e8d98b00daf4117738eda418309
 
 LABEL org.opencontainers.image.source="https://github.com/chenrui333/schema-registry-iam"
 LABEL org.opencontainers.image.description="Confluent Schema Registry with AWS MSK IAM auth"
