@@ -67,22 +67,6 @@ On a `v*` tag push, `release.yml`:
 4. Pushes to GHCR with tags: `<IMAGE_VERSION>`, `<major>.<minor>`, `latest`, `<sha>`
 5. Creates a GitHub Release with auto-generated notes prepended with GHCR pull commands
 
-## Verify the release
-
-After pushing the tag:
-
-1. Confirm the `release.yml` tag run completed successfully.
-2. Confirm the GitHub Release exists and is marked latest:
-   ```bash
-   gh release list --limit 5
-   gh release view v<CP_VERSION>
-   ```
-3. Confirm GHCR published the expected tags: `<CP_VERSION>`, `<major>.<minor>`,
-   `latest`, and the short commit SHA.
-
-Do not create another release tag for docs-only release guide updates.
-Merging those updates still triggers the normal `main` publish workflow.
-
 ## Notes
 
 - **Renovate PRs for `IAM_AUTH_VERSION` or `CP_VERSION`** require manual
@@ -90,3 +74,5 @@ Merging those updates still triggers the normal `main` publish workflow.
   release — automerge is intentionally disabled for these.
 - **Immutable releases**: if repository-level immutable releases are enabled,
   GitHub Releases cannot be edited after creation.
+- **Docs-only updates**: do not create another release tag for release-guide
+  changes. Merging them still triggers the normal `main` publish workflow.
