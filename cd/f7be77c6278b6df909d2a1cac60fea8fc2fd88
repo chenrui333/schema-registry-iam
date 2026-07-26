@@ -1,0 +1,35 @@
+Dockerfile
+  s_2a6ad5b3a0e5e3::t_3ac51d9653e0f0 12,21,23,31-32,36-38,45-47
+README.md
+  s_2a6ad5b3a0e5e3::t_5dc12b82569e01 17-19,24,32-36,54-56,70,73-77,83-84,111,154-155,157
+CHANGELOG.md
+  s_2a6ad5b3a0e5e3::t_5dc12b82569e01 6-8,12-22,81-82
+RELEASE.md
+  s_2a6ad5b3a0e5e3::t_5dc12b82569e01 5-8,12-16,21,26,31,35-36,45-46,64-68,88-90
+  s_2a6ad5b3a0e5e3::t_606269bea82cd2 51-59
+CLAUDE.md
+  s_2a6ad5b3a0e5e3::t_5dc12b82569e01 25-26,42,56-57,63-64,72-73,83-86
+scripts/test-image.sh
+  s_2a6ad5b3a0e5e3::t_3ac51d9653e0f0 5-8,53-70,76-81,83-88,91-108,114-116,118
+  s_2a6ad5b3a0e5e3::t_3e09c6357d831f 112-113
+  s_2a6ad5b3a0e5e3::t_f2c057b3684a6a 82,109-111,117
+  s_2a6ad5b3a0e5e3::t_7ff96bffc1d5bd 119
+.github/workflows/release.yml
+  s_2a6ad5b3a0e5e3::t_3ac51d9653e0f0 27-38,89,91
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "cdf7be77c6278b6df909d2a1cac60fea8fc2fd88",
+  "prompts": {},
+  "sessions": {
+    "s_2a6ad5b3a0e5e3": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f9f0c-7cd7-7513-b743-a88429881593",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Rui Chen <rui@chenrui.dev>"
+    }
+  }
+}
