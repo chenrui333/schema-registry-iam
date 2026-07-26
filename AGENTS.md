@@ -50,6 +50,9 @@ actionlint .github/workflows/publish.yml .github/workflows/release.yml
 git diff --check
 ```
 
+`actionlint` is not installed by this repository's `mise.toml`; install it
+separately before validating workflow changes.
+
 The local test does not prove a live MSK IAM handshake. Changes affecting
 authentication or startup must also be verified in an IAM-enabled integration
 environment before being promoted.
