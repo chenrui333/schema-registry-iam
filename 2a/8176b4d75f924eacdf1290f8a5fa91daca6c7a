@@ -1,0 +1,20 @@
+AGENTS.md
+  s_77415b08140c0e::t_3e03d2fe677a2e 3,5-8,10,12-15,18-26,28,30-40,44-45,47,49-55,59,61,64,66-67
+  s_77415b08140c0e::t_4e9d9dd655a96e 16-17,41-43,56-57,62-63
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "2a8176b4d75f924eacdf1290f8a5fa91daca6c7a",
+  "prompts": {},
+  "sessions": {
+    "s_77415b08140c0e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f9f65-efda-71e0-9561-8c9e9b6d7572",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Rui Chen <rui@chenrui.dev>"
+    }
+  }
+}
