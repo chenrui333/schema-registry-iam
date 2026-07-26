@@ -109,7 +109,7 @@ if [[ "${ENTRYPOINT_STATUS}" -ne 0 ]] \
   && grep -q "Check if Kafka is healthy" <<<"${ENTRYPOINT_OUTPUT}" \
   && grep -q "kafka-ready check failed" <<<"${ENTRYPOINT_OUTPUT}" \
   && ! grep -Eq \
-    'ClassNotFoundException|NoClassDefFoundError|Class .* could not be found' \
+    'ClassNotFoundException|NoClassDefFoundError|UnsupportedClassVersionError|LinkageError|Class .* could not be found' \
     <<<"${ENTRYPOINT_OUTPUT}"; then
   pass "entrypoint loaded IAM classes and reached the expected Kafka timeout"
 else
