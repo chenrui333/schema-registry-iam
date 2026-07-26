@@ -24,6 +24,18 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
 
+      - name: Verify tag matches IMAGE_VERSION
+        run: |
+          set -euo pipefail
+          version=$(grep '^ARG IMAGE_VERSION=' Dockerfile | cut -d= -f2)
+          expected="v${version}"
+          if [[ "${GITHUB_REF_NAME}" != "${expected}" ]]; then
+            echo "Release tag ${GITHUB_REF_NAME} does not match IMAGE_VERSION ${version}"
+            echo "Expected tag: ${expected}"
+            exit 1
+          fi
+          echo "Release tag verified: ${GITHUB_REF_NAME}"
+
       - name: Verify CP_DIGEST matches CP_VERSION
         run: |
           set -euo pipefail
@@ -74,9 +86,9 @@ jobs:
         with:
           images: ${{ env.IMAGE_NAME }}
           tags: |
-            # tag event: v7.9.6 -> 7.9.6
+            # tag event: v8.3.1 -> 8.3.1
             type=semver,pattern={{version}}
-            # tag event: v7.9.6 -> 7.9
+            # tag event: v8.3.1 -> 8.3
             type=semver,pattern={{major}}.{{minor}}
             # tag releases also refresh latest
             type=raw,value=latest

@@ -22,7 +22,8 @@ Published to `ghcr.io/chenrui333/schema-registry-iam`.
 
 1. Check latest `confluentinc/cp-schema-registry` tag on Docker Hub
 2. Check latest `aws-msk-iam-auth` release on GitHub
-3. Update `CP_VERSION` and/or `IAM_AUTH_VERSION` ARG defaults in `Dockerfile`
+3. Set `IMAGE_VERSION` to the next release and update `CP_VERSION` and/or
+   `IAM_AUTH_VERSION` when the embedded components change
 4. If `CP_VERSION` changed, update `CP_DIGEST`:
    ```bash
    docker buildx imagetools inspect confluentinc/cp-schema-registry:<VER> | grep Digest
@@ -38,7 +39,7 @@ Published to `ghcr.io/chenrui333/schema-registry-iam`.
    EOF
    ```
 6. Run `just test` — all checks must pass
-7. Commit, tag (`v<CP_VERSION>`), and push
+7. Commit, tag (`v<IMAGE_VERSION>`), and push
 
 Renovate auto-opens PRs for version bumps. When it bumps `IAM_AUTH_VERSION`,
 CI will fail until `IAM_AUTH_JAR_SHA256` is updated (this is intentional —
@@ -52,14 +53,15 @@ just test
 
 Or directly: `./scripts/test-image.sh`
 
-Validates: image builds, JAR present, IAM classes loadable.
+Validates: image builds, JAR present on the runtime and preflight classpaths,
+IAM classes loadable, and the real entrypoint passes IAM class loading.
 Does NOT test live MSK connectivity.
 
 ## How publishing works
 
 - Push to `main` → `.github/workflows/publish.yml` builds, tests, publishes `latest` + `<sha>` tags
-- Push tag `v*` → `.github/workflows/release.yml` builds, tests, publishes semver tags (`8.2.0`, `8.2`) + `latest` + `<sha>`
-- **Tag convention**: tags track `CP_VERSION` — `v<CP_VERSION>` (e.g. `v8.2.0`). This keeps the image tag and Confluent Platform version in sync.
+- Push tag `v*` → `.github/workflows/release.yml` verifies `IMAGE_VERSION`, builds, tests, and publishes semver tags (`8.3.1`, `8.3`) + `latest` + `<sha>`
+- **Tag convention**: tags track `IMAGE_VERSION` — `v<IMAGE_VERSION>` (e.g. `v8.3.1`). Major/minor track the compatible Confluent line; patch versions identify image releases and may differ from the embedded Confluent patch.
 - Tag releases also create a GitHub Release with generated notes and prepended GHCR pull commands
 - Pull requests → build + test only (no push)
 - Published images are multi-arch (`linux/amd64`, `linux/arm64`)
@@ -67,6 +69,8 @@ Does NOT test live MSK connectivity.
 
 ## What not to change casually
 
+- **`IMAGE_VERSION` default** — the image project's release version. Every tag
+  must match it exactly; never reuse an already-published version.
 - **`CP_VERSION` default** — this is the upstream base image version. Only bump
   after verifying the new version exists on Docker Hub and passes validation.
 - **`CP_DIGEST`** — digest-pin for the base image. Must be updated whenever
@@ -76,8 +80,10 @@ Does NOT test live MSK connectivity.
   `IAM_AUTH_JAR_SHA256` in the same commit.
 - **`IAM_AUTH_JAR_SHA256`** — integrity check for the downloaded JAR. Build
   fails if this doesn't match. Never remove or skip the verification.
-- **JAR download path** — `/usr/share/java/schema-registry/` is where the
-  Confluent entrypoint expects classpath JARs. Moving it will break class loading.
+- **JAR classpaths** — Schema Registry loads the JAR from
+  `/usr/share/java/schema-registry/`, while Confluent 8.3's `kafka-ready`
+  preflight loads it through the symlink in `/usr/share/java/cp-base-java-micro/`.
+  Both paths are required.
 - **Workflow permissions** — kept minimal (`contents: read`, `packages: write`).
   Do not add unnecessary permissions.
 - **OCI labels** — used by GHCR for package metadata display.

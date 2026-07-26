@@ -3,9 +3,22 @@
 All notable changes to this project are documented here.
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
-Versioning: [Semantic Versioning](https://semver.org/) — version tracks `CP_VERSION`.
+Versioning: [Semantic Versioning](https://semver.org/). Major and minor versions
+track the compatible Confluent Platform line; patch versions identify releases
+of this image and may differ from the embedded Confluent patch version.
 
 ## [Unreleased]
+
+## [8.3.1] - 2026-07-26
+
+### Fixed
+
+- Expose the AWS MSK IAM auth JAR to Confluent 8.3's `kafka-ready` preflight classpath
+- Exercise the real Confluent entrypoint with IAM settings so preflight class-loading regressions fail CI
+
+### Changed
+
+- Separate the image release version (`8.3.1`) from the embedded Confluent Platform version (`8.3.0`)
 
 ## [8.3.0] - 2026-07-03
 
@@ -65,7 +78,8 @@ Versioning: [Semantic Versioning](https://semver.org/) — version tracks `CP_VE
 
 ---
 
-[Unreleased]: https://github.com/chenrui333/schema-registry-iam/compare/v8.3.0...HEAD
+[Unreleased]: https://github.com/chenrui333/schema-registry-iam/compare/v8.3.1...HEAD
+[8.3.1]: https://github.com/chenrui333/schema-registry-iam/releases/tag/v8.3.1
 [8.3.0]: https://github.com/chenrui333/schema-registry-iam/releases/tag/v8.3.0
 [8.2.0]: https://github.com/chenrui333/schema-registry-iam/releases/tag/v8.2.0
 [7.9.6]: https://github.com/chenrui333/schema-registry-iam/releases/tag/v7.9.6
