@@ -24,6 +24,35 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
 
+      - name: Verify release version is new
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          version=$(grep '^ARG IMAGE_VERSION=' Dockerfile | cut -d= -f2)
+          expected="v${version}"
+          if [[ "${GITHUB_REF_NAME}" != "${expected}" ]]; then
+            echo "Release tag ${GITHUB_REF_NAME} does not match IMAGE_VERSION ${version}"
+            echo "Expected tag: ${expected}"
+            exit 1
+          fi
+          echo "Release tag verified: ${GITHUB_REF_NAME}"
+
+          if gh release view "${GITHUB_REF_NAME}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            echo "GitHub Release ${GITHUB_REF_NAME} already exists; refusing to overwrite it."
+            exit 1
+          fi
+
+          package_name="${IMAGE_NAME##*/}"
+          published_tags=$(gh api --paginate \
+            "/users/${GITHUB_REPOSITORY_OWNER}/packages/container/${package_name}/versions?per_page=100" \
+            --jq '.[].metadata.container.tags[]')
+          if grep -Fxq "${version}" <<<"${published_tags}"; then
+            echo "GHCR image tag ${IMAGE_NAME}:${version} already exists; refusing to overwrite it."
+            exit 1
+          fi
+          echo "Release version is unused: ${version}"
+
       - name: Verify CP_DIGEST matches CP_VERSION
         run: |
           set -euo pipefail
@@ -74,9 +103,9 @@ jobs:
         with:
           images: ${{ env.IMAGE_NAME }}
           tags: |
-            # tag event: v7.9.6 -> 7.9.6
+            # tag event: v8.3.1 -> 8.3.1
             type=semver,pattern={{version}}
-            # tag event: v7.9.6 -> 7.9
+            # tag event: v8.3.1 -> 8.3
             type=semver,pattern={{major}}.{{minor}}
             # tag releases also refresh latest
             type=raw,value=latest
@@ -100,11 +129,6 @@ jobs:
           tag="${GITHUB_REF_NAME}"
           version="${tag#v}"
           minor="${version%.*}"
-
-          if gh release view "${tag}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
-            echo "GitHub release ${tag} already exists; skipping."
-            exit 0
-          fi
 
           notes_template=$(cat <<'EOF'
           ## Container image

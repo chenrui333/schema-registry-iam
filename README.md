@@ -14,13 +14,14 @@ Published to **`ghcr.io/chenrui333/schema-registry-iam`**.
 
 | Component | Version | Source |
 |---|---|---|
-| Confluent Platform (Schema Registry) | `8.2.0` | [Docker Hub](https://hub.docker.com/r/confluentinc/cp-schema-registry) |
-| aws-msk-iam-auth | `2.3.5` | [GitHub releases](https://github.com/aws/aws-msk-iam-auth/releases) |
+| schema-registry-iam image | `8.3.1` | [GitHub releases](https://github.com/chenrui333/schema-registry-iam/releases) |
+| Confluent Platform (Schema Registry) | `8.3.0` | [Docker Hub](https://hub.docker.com/r/confluentinc/cp-schema-registry) |
+| aws-msk-iam-auth | `2.3.7` | [GitHub releases](https://github.com/aws/aws-msk-iam-auth/releases) |
 
 Override at build time:
 
 ```bash
-docker build --build-arg CP_VERSION=8.2.0 --build-arg IAM_AUTH_VERSION=2.3.5 .
+docker build --build-arg IMAGE_VERSION=8.3.1 --build-arg CP_VERSION=8.3.0 --build-arg IAM_AUTH_VERSION=2.3.7 .
 ```
 
 ## How the image is built
@@ -28,10 +29,11 @@ docker build --build-arg CP_VERSION=8.2.0 --build-arg IAM_AUTH_VERSION=2.3.5 .
 The Dockerfile:
 
 1. Starts `FROM confluentinc/cp-schema-registry:<CP_VERSION>`
-2. Downloads the `aws-msk-iam-auth` uber-JAR into
-   `/usr/share/java/schema-registry/` (auto-included on the classpath by the
-   Confluent entrypoint)
-3. Sets correct file permissions
+2. Downloads the `aws-msk-iam-auth` uber-JAR into the Schema Registry runtime
+   classpath at `/usr/share/java/schema-registry/`
+3. Links the verified JAR into `/usr/share/java/cp-base-java-micro/`, which
+   Confluent 8.3 uses for its `kafka-ready` preflight
+4. Sets correct file permissions
 
 No upstream source is forked or patched.
 
@@ -49,8 +51,9 @@ just test
 
 This verifies:
 - Image builds successfully
-- `aws-msk-iam-auth` JAR is present in the classpath directory
-- `IAMLoginModule` and `IAMClientCallbackHandler` classes are loadable
+- `aws-msk-iam-auth` is available to both runtime and preflight classpaths
+- `IAMLoginModule` and `IAMClientCallbackHandler` are loadable from each classpath
+- The real Confluent entrypoint loads the IAM configuration before reaching Kafka
 
 It does **not** test live MSK connectivity (see [What remains unverified](#what-remains-unverified)).
 
@@ -64,19 +67,21 @@ GitHub Actions uses:
 | Trigger | Tags produced |
 |---|---|
 | Push to `main` | `latest`, `<sha>` |
-| Push tag `v<CP_VERSION>` | `<CP_VERSION>`, `<major>.<minor>`, `<sha>`, `latest` + GitHub Release |
+| Push tag `v<IMAGE_VERSION>` | `<IMAGE_VERSION>`, `<major>.<minor>`, `<sha>`, `latest` + GitHub Release |
 | Pull request | Build + test only (no push) |
 
-**Release tags track the upstream `CP_VERSION`** (e.g. tag `v8.2.0` → image
-tagged `8.2.0`, `8.2`, `latest`, `<sha>`). This makes it unambiguous which
-Confluent Platform version the image contains.
+Release tags use the image project's semantic version. Major and minor versions
+track the compatible Confluent Platform line; patch versions identify image
+releases and may differ from the embedded Confluent patch version. For example,
+image `8.3.1` contains Confluent Platform `8.3.0` plus this project's first
+packaging fix in the 8.3 line.
 
 Tag releases generate GitHub release notes automatically and prepend GHCR pull
 commands such as:
 
 ```bash
-docker pull ghcr.io/chenrui333/schema-registry-iam:8.2.0
-docker pull ghcr.io/chenrui333/schema-registry-iam:8.2
+docker pull ghcr.io/chenrui333/schema-registry-iam:8.3.1
+docker pull ghcr.io/chenrui333/schema-registry-iam:8.3
 docker pull ghcr.io/chenrui333/schema-registry-iam:latest
 ```
 
@@ -103,7 +108,7 @@ docker pull ghcr.io/chenrui333/schema-registry-iam:latest
 Or pin to a specific version:
 
 ```bash
-docker pull ghcr.io/chenrui333/schema-registry-iam:8.2.0
+docker pull ghcr.io/chenrui333/schema-registry-iam:8.3.1
 ```
 
 ## Required IAM environment variables
@@ -146,9 +151,10 @@ To update manually:
 
 1. Check the latest [cp-schema-registry tags on Docker Hub](https://hub.docker.com/r/confluentinc/cp-schema-registry/tags)
 2. Check the latest [aws-msk-iam-auth releases](https://github.com/aws/aws-msk-iam-auth/releases)
-3. Update `CP_VERSION` and/or `IAM_AUTH_VERSION` defaults in `Dockerfile`
+3. Set `IMAGE_VERSION` to the next release and update `CP_VERSION` and/or
+   `IAM_AUTH_VERSION` when the embedded components change
 4. Run `just test` to validate
-5. Tag and push: `git tag v<CP_VERSION> && git push --tags`
+5. Tag and push: `git tag v<IMAGE_VERSION> && git push origin v<IMAGE_VERSION>`
 
 ## License
 
