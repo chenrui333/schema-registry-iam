@@ -10,7 +10,7 @@
 #   docker build --build-arg CP_VERSION=7.9.6 --build-arg IAM_AUTH_VERSION=2.3.5 .
 
 ARG IMAGE_VERSION=8.3.1
-ARG CP_VERSION=8.3.0
+ARG CP_VERSION=8.3.1
 # Digest of the manifest list for confluentinc/cp-schema-registry:${CP_VERSION}.
 # Pin to digest so builds are reproducible even if the tag is re-pushed.
 # Update when bumping CP_VERSION:
