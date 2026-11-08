@@ -159,17 +159,14 @@ MSK cluster and are **not** tested here:
 
 ## Updating versions
 
-[Renovate](https://docs.renovatebot.com/) is configured to automatically open
-PRs when new versions of the base image or `aws-msk-iam-auth` are released.
+[Renovate](https://docs.renovatebot.com/) opens PRs when new versions of the
+base image or `aws-msk-iam-auth` are released. Base image PRs update
+`CP_VERSION` and `CP_DIGEST` together; `aws-msk-iam-auth` PRs need a manual
+`IAM_AUTH_JAR_SHA256` update. Neither automerges.
 
-To update manually:
-
-1. Check the latest [cp-schema-registry tags on Docker Hub](https://hub.docker.com/r/confluentinc/cp-schema-registry/tags)
-2. Check the latest [aws-msk-iam-auth releases](https://github.com/aws/aws-msk-iam-auth/releases)
-3. Set `IMAGE_VERSION` to the next release and update `CP_VERSION` and/or
-   `IAM_AUTH_VERSION` when the embedded components change
-4. Run `just test` to validate
-5. Tag and push: `git tag v<IMAGE_VERSION> && git push origin v<IMAGE_VERSION>`
+To update manually, follow [CLAUDE.md](CLAUDE.md) for the version, digest, and
+checksum changes, then [RELEASE.md](RELEASE.md) to update `CHANGELOG.md`,
+merge to `main`, and tag the release.
 
 ## License
 

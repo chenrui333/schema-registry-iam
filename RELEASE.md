@@ -69,9 +69,10 @@ On a `v*` tag push, `release.yml`:
 
 ## Notes
 
-- **Renovate PRs for `IAM_AUTH_VERSION` or `CP_VERSION`** require manual
-  digest/checksum updates and a deliberate `IMAGE_VERSION` choice before
-  release — automerge is intentionally disabled for these.
+- **Renovate PRs for `CP_VERSION` or `IAM_AUTH_VERSION`** do not automerge.
+  `CP_VERSION` PRs include the new `CP_DIGEST`; `IAM_AUTH_VERSION` PRs need a
+  manual `IAM_AUTH_JAR_SHA256` update. Either needs a deliberate
+  `IMAGE_VERSION` choice before release.
 - **Immutable releases**: if repository-level immutable releases are enabled,
   GitHub Releases cannot be edited after creation.
 - **Docs-only updates**: do not create another release tag for release-guide

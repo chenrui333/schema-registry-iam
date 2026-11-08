@@ -22,7 +22,8 @@ ARG IMAGE_VERSION=8.4.0
 ARG CP_VERSION=8.4.0
 # Digest of the manifest list for confluentinc/cp-schema-registry:${CP_VERSION}.
 # Pin to digest so builds are reproducible even if the tag is re-pushed.
-# Update when bumping CP_VERSION:
+# Renovate updates CP_VERSION and CP_DIGEST together; its regex expects only
+# comment lines between them. Manual update:
 #   docker buildx imagetools inspect confluentinc/cp-schema-registry:<VER> | grep Digest
 ARG CP_DIGEST=sha256:12cd2770fa25df65243dabafd5eef5337ea1145a3cb85afc8a27f7151dfa2999
 FROM confluentinc/cp-schema-registry:${CP_VERSION}@${CP_DIGEST}

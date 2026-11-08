@@ -42,9 +42,11 @@ Published to `ghcr.io/chenrui333/schema-registry-iam`.
 6. Run `just test` — all checks must pass
 7. Commit, tag (`v<IMAGE_VERSION>`), and push
 
-Renovate auto-opens PRs for version bumps. When it bumps `IAM_AUTH_VERSION`,
-CI will fail until `IAM_AUTH_JAR_SHA256` is updated (this is intentional —
-`ADD --checksum` prevents publishing an unverified artifact).
+Renovate auto-opens PRs for version bumps. A `CP_VERSION` PR also updates
+`CP_DIGEST`. When it bumps `IAM_AUTH_VERSION`, CI will fail until
+`IAM_AUTH_JAR_SHA256` is updated (this is intentional — `ADD --checksum`
+prevents publishing an unverified artifact). Neither PR automerges: set
+`IMAGE_VERSION` and cut a release as described in `RELEASE.md`.
 
 ## How to run local validation
 
