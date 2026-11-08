@@ -201,7 +201,7 @@ If you pre-create `_schemas` (one partition, `cleanup.policy=compact`), remove
 `SCHEMA_REGISTRY_KAFKASTORE_GROUP_ID`, change the topic and group ARNs to
 match. Idempotent (non-transactional) writes need no transactional-ID
 permissions.
-match. This list comes from the Schema Registry 8.4 source (`KafkaStore`,
+This list comes from the Schema Registry 8.4 source (`KafkaStore`,
 `KafkaStoreReaderThread`, `SchemaRegistryConfig`) and the
 [MSK IAM action semantics](https://docs.aws.amazon.com/msk/latest/developerguide/kafka-actions.html);
 it has not been verified against a live cluster here.
