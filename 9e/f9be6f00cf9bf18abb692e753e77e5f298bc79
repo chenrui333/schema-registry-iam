@@ -1,0 +1,18 @@
+Dockerfile
+  h_9df9c32c3f321d 9-12
+README.md
+  h_9df9c32c3f321d 21-23,26-30
+scripts/test-image.sh
+  h_9df9c32c3f321d 72-73
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "9ef9be6f00cf9bf18abb692e753e77e5f298bc79",
+  "prompts": {},
+  "humans": {
+    "h_9df9c32c3f321d": {
+      "author": "Rui Chen <rui@chenrui.dev>"
+    }
+  }
+}
