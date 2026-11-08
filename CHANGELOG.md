@@ -24,14 +24,12 @@ of this image and may differ from the embedded Confluent patch version.
 ### Fixed
 
 - README "Updating versions" omitted the digest, checksum, and changelog steps; it now points to `CLAUDE.md` and `RELEASE.md`
-
-### Fixed
-
 - README IAM guidance omitted `WriteDataIdempotently`, `DescribeTopicDynamicConfiguration`, and the `schema-registry*` group actions that Schema Registry 8.4 needs; it now has a scoped example policy, credential and session-name guidance, and troubleshooting
 
 ### Security
 
 - CI: workflows default to `permissions: {}`; the release workflow splits into a `publish` job (`contents: read`, `packages: write`) and a `github-release` job that alone holds `contents: write` and runs no third-party actions
+- Docs: clarify that MSK IAM does not authenticate or authorize REST clients; explicit assume-role configuration now disables fallback to a different AWS principal
 
 ## [8.4.0] - 2026-11-08
 
