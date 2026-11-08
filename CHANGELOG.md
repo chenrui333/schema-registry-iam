@@ -15,10 +15,6 @@ of this image and may differ from the embedded Confluent patch version.
 - Test: `scripts/test-runtime.sh` starts Schema Registry against a local PLAINTEXT Kafka (`apache/kafka:4.4.0`, digest-pinned), registers a schema, reads it back, and fails on class-loading errors; `just test`, `just validate`, and the amd64 CI/release builds run it
 - CI: `just lint` also runs `actionlint` and `zizmor --offline` on the workflows (pinned in `mise.toml`)
 
-### Security
-
-- CI: workflows default to `permissions: {}`; the release workflow splits into a `publish` job (`contents: read`, `packages: write`) and a `github-release` job that alone holds `contents: write` and runs no third-party actions
-
 ### Changed
 
 - Verify the IAM auth JAR with `ADD --checksum` and set its mode with `ADD --chmod`, dropping the `RUN sha256sum`/`chmod` layer that stored a second 10.2 MB copy of the JAR
@@ -27,6 +23,10 @@ of this image and may differ from the embedded Confluent patch version.
 ### Fixed
 
 - README IAM guidance omitted `WriteDataIdempotently`, `DescribeTopicDynamicConfiguration`, and the `schema-registry*` group actions that Schema Registry 8.4 needs; it now has a scoped example policy, credential and session-name guidance, and troubleshooting
+
+### Security
+
+- CI: workflows default to `permissions: {}`; the release workflow splits into a `publish` job (`contents: read`, `packages: write`) and a `github-release` job that alone holds `contents: write` and runs no third-party actions
 
 ## [8.4.0] - 2026-11-08
 
