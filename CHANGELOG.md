@@ -13,6 +13,10 @@ of this image and may differ from the embedded Confluent patch version.
 
 - CI: `lint` job runs `just lint` (`shellcheck`, `hadolint` from `mise.toml`) on PRs and `main`; `build-and-publish` requires it
 
+### Fixed
+
+- README IAM guidance omitted `WriteDataIdempotently`, `DescribeTopicDynamicConfiguration`, and the `schema-registry*` group actions that Schema Registry 8.4 needs; it now has a scoped example policy, credential and session-name guidance, and troubleshooting
+
 ## [8.4.0] - 2026-11-08
 
 ### Changed
