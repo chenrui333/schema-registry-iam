@@ -61,8 +61,11 @@ change when image startup, classpath, publishing, or release behavior changes.
   permissions to fix an unrelated workflow failure.
 - Keep PR workflows build-and-test only. Publishing is limited to `main` pushes
   and release tags.
-- Preserve the concurrency policy: superseded PR runs may be canceled, but
-  `main` publish runs must queue rather than cancel one another.
+- Preserve the concurrency policy: superseded PR runs may be canceled, but an
+  in-progress `main` publish run is never canceled. GitHub keeps only one
+  pending run per group, so in a burst of `main` pushes the intermediate
+  pending runs are replaced and those commits get no `<sha>` tag; the newest
+  commit still publishes `latest`.
 
 ## Validation by change type
 
