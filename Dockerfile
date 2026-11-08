@@ -8,7 +8,8 @@
 #
 # Override versions at build time; pass CP_DIGEST with CP_VERSION and
 # IAM_AUTH_JAR_SHA256 with IAM_AUTH_VERSION (see CLAUDE.md):
-#   docker build --build-arg CP_VERSION=<ver> --build-arg CP_DIGEST=sha256:<digest> \
+#   docker build --build-arg IMAGE_VERSION=<ver> \
+#     --build-arg CP_VERSION=<ver> --build-arg CP_DIGEST=sha256:<digest> \
 #     --build-arg IAM_AUTH_VERSION=<ver> --build-arg IAM_AUTH_JAR_SHA256=<sha256> .
 
 ARG IMAGE_VERSION=8.4.0
