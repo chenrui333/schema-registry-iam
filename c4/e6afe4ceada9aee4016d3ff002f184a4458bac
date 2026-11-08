@@ -1,0 +1,24 @@
+AGENTS.md
+  h_9df9c32c3f321d 19-23
+CLAUDE.md
+  h_9df9c32c3f321d 45-46
+Dockerfile
+  h_9df9c32c3f321d 25-26
+README.md
+  h_9df9c32c3f321d 162-169
+RELEASE.md
+  h_9df9c32c3f321d 72-75
+renovate.json
+  h_9df9c32c3f321d 24,29,52-53,60-64
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "c4e6afe4ceada9aee4016d3ff002f184a4458bac",
+  "prompts": {},
+  "humans": {
+    "h_9df9c32c3f321d": {
+      "author": "Rui Chen <rui@chenrui.dev>"
+    }
+  }
+}
