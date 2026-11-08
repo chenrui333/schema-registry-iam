@@ -19,6 +19,10 @@ of this image and may differ from the embedded Confluent patch version.
 - Verify the IAM auth JAR with `ADD --checksum` and set its mode with `ADD --chmod`, dropping the `RUN sha256sum`/`chmod` layer that stored a second 10.2 MB copy of the JAR
 - Skip the BuildKit `SecretsUsedInArgOrEnv` check, which flagged the public `IAM_AUTH_JAR_SHA256` checksum
 
+### Fixed
+
+- README IAM guidance omitted `WriteDataIdempotently`, `DescribeTopicDynamicConfiguration`, and the `schema-registry*` group actions that Schema Registry 8.4 needs; it now has a scoped example policy, credential and session-name guidance, and troubleshooting
+
 ## [8.4.0] - 2026-11-08
 
 ### Changed

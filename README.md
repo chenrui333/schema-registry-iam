@@ -126,13 +126,16 @@ Or pin to a specific version:
 docker pull ghcr.io/chenrui333/schema-registry-iam:8.4.0
 ```
 
-## Required IAM environment variables
+## Configuring MSK IAM authentication
 
-To connect Schema Registry to an IAM-authenticated MSK cluster, set these
-environment variables on your container/task:
+Set these environment variables on the container or task. The upstream
+entrypoint also requires `SCHEMA_REGISTRY_HOST_NAME`.
 
 ```bash
-# Kafka bootstrap (IAM-enabled MSK endpoint, port 9098)
+SCHEMA_REGISTRY_HOST_NAME=<address other instances use to reach this one>
+SCHEMA_REGISTRY_LISTENERS=http://0.0.0.0:8081
+
+# IAM-enabled MSK bootstrap brokers (port 9098)
 SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS=b-1.msk-cluster.xxxx.kafka.us-east-1.amazonaws.com:9098,b-2...
 
 # SASL/IAM config
@@ -142,10 +145,85 @@ SCHEMA_REGISTRY_KAFKASTORE_SASL_JAAS_CONFIG=software.amazon.msk.auth.iam.IAMLogi
 SCHEMA_REGISTRY_KAFKASTORE_SASL_CLIENT_CALLBACK_HANDLER_CLASS=software.amazon.msk.auth.iam.IAMClientCallbackHandler
 ```
 
-The container/task must also have an IAM role with permissions to connect to the
-MSK cluster (at minimum: `kafka-cluster:Connect`, `kafka-cluster:ReadData`,
-`kafka-cluster:WriteData`, `kafka-cluster:DescribeTopic`,
-`kafka-cluster:CreateTopic` on the `_schemas` topic).
+The IAM login module signs requests with credentials from the
+[AWS default credential provider chain](https://github.com/aws/aws-msk-iam-auth#configuring-a-kafka-client-to-use-aws-iam-with-aws_msk_iam-mechanism)
+(for example an ECS task role, EKS IRSA, or an EC2 instance profile). To assume
+a dedicated role, set:
+
+```bash
+SCHEMA_REGISTRY_KAFKASTORE_SASL_JAAS_CONFIG=software.amazon.msk.auth.iam.IAMLoginModule required awsRoleArn="arn:aws:iam::<account>:role/<msk-role>" awsRoleSessionName="schema-registry";
+```
+
+Credential providers that generate a new session name on refresh, such as EKS
+Pod Identity, make re-authentication fail with
+`Cannot change principals during re-authentication`; the fixed
+`awsRoleSessionName` above is the
+[upstream workaround](https://github.com/aws/aws-msk-iam-auth#failure-during-re-authentication-due-to-session-name-change-eks-pod-identityother-credential-providers).
+
+### IAM policy
+
+Schema Registry needs these MSK actions. With default settings:
+
+| Resource | Actions | Why |
+|---|---|---|
+| Cluster | `kafka-cluster:Connect` | Authenticate to the brokers |
+| Cluster | `kafka-cluster:WriteDataIdempotently` | The `_schemas` producer sets `enable.idempotence=true` |
+| Topic `_schemas` | `kafka-cluster:CreateTopic` | Create the topic on first start (omit if you pre-create it as a compacted, single-partition topic) |
+| Topic `_schemas` | `kafka-cluster:DescribeTopic`, `kafka-cluster:DescribeTopicDynamicConfiguration` | Find the topic and verify `cleanup.policy=compact` on every later start |
+| Topic `_schemas` | `kafka-cluster:ReadData`, `kafka-cluster:WriteData` | Read and append schemas |
+| Groups `schema-registry*` | `kafka-cluster:DescribeGroup`, `kafka-cluster:AlterGroup` | Leader election joins group `schema-registry`; the store reader's consumer uses `group.id` `schema-registry-<host>-<port>`; MSK requires `AlterGroup` with `ReadData` |
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["kafka-cluster:Connect", "kafka-cluster:WriteDataIdempotently"],
+      "Resource": "arn:aws:kafka:<region>:<account>:cluster/<cluster-name>/<cluster-uuid>"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "kafka-cluster:CreateTopic",
+        "kafka-cluster:DescribeTopic",
+        "kafka-cluster:DescribeTopicDynamicConfiguration",
+        "kafka-cluster:ReadData",
+        "kafka-cluster:WriteData"
+      ],
+      "Resource": "arn:aws:kafka:<region>:<account>:topic/<cluster-name>/<cluster-uuid>/_schemas"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["kafka-cluster:DescribeGroup", "kafka-cluster:AlterGroup"],
+      "Resource": "arn:aws:kafka:<region>:<account>:group/<cluster-name>/<cluster-uuid>/schema-registry*"
+    }
+  ]
+}
+```
+
+If you pre-create `_schemas` (one partition, `cleanup.policy=compact`), remove
+`kafka-cluster:CreateTopic` from the topic statement. If you set
+`SCHEMA_REGISTRY_KAFKASTORE_TOPIC`,
+`SCHEMA_REGISTRY_SCHEMA_REGISTRY_GROUP_ID`, or
+`SCHEMA_REGISTRY_KAFKASTORE_GROUP_ID`, change the topic and group ARNs to
+match. Idempotent (non-transactional) writes need no transactional-ID
+permissions.
+This list comes from the Schema Registry 8.4 source (`KafkaStore`,
+`KafkaStoreReaderThread`, `SchemaRegistryConfig`) and the
+[MSK IAM action semantics](https://docs.aws.amazon.com/msk/latest/developerguide/kafka-actions.html);
+it has not been verified against a live cluster here.
+
+### Troubleshooting
+
+| Symptom | Likely cause |
+|---|---|
+| Startup stops at `Check if Kafka is healthy` / `kafka-ready check failed` | Network path to port 9098, or `kafka-cluster:Connect` denied (check the Kafka log lines above it) |
+| `SaslAuthenticationException: Access denied` | No usable AWS credentials, wrong role, or `Connect` not allowed on this cluster ARN |
+| `Failed trying to create or validate schema topic configuration` | Missing `CreateTopic`, `DescribeTopic`, or `DescribeTopicDynamicConfiguration` on the topic |
+| `ClusterAuthorizationException` when registering a schema | Missing `WriteDataIdempotently` on the cluster |
+| `GroupAuthorizationException`, or no instance becomes leader | Missing `DescribeGroup`/`AlterGroup` on the `schema-registry*` groups |
+| `ClassNotFoundException: software.amazon.msk.auth.iam.IAMLoginModule` | Running the upstream Confluent image instead of this one |
 
 ## What remains unverified
 
@@ -153,7 +231,7 @@ This repo validates the image build and classpath. The following require a live
 MSK cluster and are **not** tested here:
 
 - IAM authentication handshake with MSK brokers
-- `_schemas` topic creation/access via IAM policy
+- `_schemas` topic creation/access via IAM policy, including the policy above
 - End-to-end schema registration through the IAM-backed registry
 - Schema Registry HA (multi-instance leader election over IAM-auth Kafka)
 
