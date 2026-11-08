@@ -1,0 +1,24 @@
+AGENTS.md
+  h_9df9c32c3f321d 34-38
+CHANGELOG.md
+  h_9df9c32c3f321d 12-20,90-91
+CLAUDE.md
+  h_9df9c32c3f321d 38,85-89
+Dockerfile
+  h_9df9c32c3f321d 12,36-38,43,48-50
+README.md
+  h_9df9c32c3f321d 17-19,24,35-37,84-85,112
+scripts/test-image.sh
+  h_9df9c32c3f321d 8-9,70-79
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "084ec65b25e0fc898e2dade36e5a9bf3539f9b8e",
+  "prompts": {},
+  "humans": {
+    "h_9df9c32c3f321d": {
+      "author": "Rui Chen <rui@chenrui.dev>"
+    }
+  }
+}
