@@ -129,7 +129,7 @@ docker pull ghcr.io/chenrui333/schema-registry-iam:8.4.0
 ## Configuring MSK IAM authentication
 
 This image authenticates **Schema Registry to Kafka**, not REST clients to
-Schema Registry. All callers use the registry's AWS role for Kafka operations;
+Schema Registry. All callers use the registry's AWS identity for Kafka operations;
 their identities are not forwarded to MSK. The default REST listener is
 unauthenticated HTTP. Restrict access with network controls, and configure
 [REST authentication and HTTPS](https://docs.confluent.io/platform/current/schema-registry/security/index.html)
