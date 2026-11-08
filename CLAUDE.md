@@ -8,7 +8,8 @@ Published to `ghcr.io/chenrui333/schema-registry-iam`.
 | File | Purpose |
 |---|---|
 | `Dockerfile` | Image definition — base image + IAM JAR |
-| `scripts/test-image.sh` | Local image validation (build, JAR, class loading) |
+| `scripts/test-image.sh` | Image validation (JAR, classpaths, user, entrypoint preflight) on each architecture |
+| `scripts/test-runtime.sh` | Runtime smoke test: Schema Registry against a local PLAINTEXT Kafka, register and fetch a schema |
 | `.github/workflows/publish.yml` | `main`/PR build, test, and `latest` publish |
 | `.github/workflows/release.yml` | Tag release publish + GitHub Release notes |
 | `README.md` | User-facing docs, env vars, consuming the image |
@@ -52,11 +53,13 @@ the checksum prevents publishing an unverified artifact).
 just test
 ```
 
-Or directly: `./scripts/test-image.sh`
+Or directly: `./scripts/test-image.sh` and `./scripts/test-runtime.sh <image>`.
 
 Validates: image builds, JAR present on the runtime and preflight classpaths,
-IAM classes loadable, and the real entrypoint passes IAM class loading.
-Does NOT test live MSK connectivity.
+IAM classes loadable, the real entrypoint passes IAM class loading, and
+Schema Registry starts against a local Kafka and serves register/fetch
+requests. CI runs the runtime smoke test on amd64 only.
+Does NOT test live MSK connectivity or IAM authentication.
 
 ## How publishing works
 

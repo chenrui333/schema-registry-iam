@@ -31,6 +31,18 @@
       "depNameTemplate": "confluentinc/cp-schema-registry",
       "datasourceTemplate": "docker",
       "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "description": "Update the digest-pinned Kafka image used by the runtime smoke test.",
+      "managerFilePatterns": [
+        "/^scripts/test-runtime\\.sh$/"
+      ],
+      "matchStrings": [
+        "KAFKA_IMAGE=\"apache/kafka:(?<currentValue>[^@\"]+)@(?<currentDigest>sha256:[a-f0-9]{64})\""
+      ],
+      "depNameTemplate": "apache/kafka",
+      "datasourceTemplate": "docker"
     }
   ],
   "packageRules": [
@@ -38,6 +50,12 @@
       "matchManagers": ["custom.regex"],
       "automerge": false,
       "description": "Regex-managed versions require manual digest/checksum updates; never automerge"
+    },
+    {
+      "matchManagers": ["custom.regex"],
+      "matchFileNames": ["scripts/test-runtime.sh"],
+      "automerge": true,
+      "description": "Test-only Kafka image; CI runs the smoke test against the update"
     }
   ]
 }
