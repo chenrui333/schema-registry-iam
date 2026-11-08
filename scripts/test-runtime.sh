@@ -68,7 +68,7 @@ URL="http://127.0.0.1:${PORT}"
 
 echo "=== Waiting for ${URL}/subjects (timeout ${STARTUP_TIMEOUT}s) ==="
 deadline=$((SECONDS + STARTUP_TIMEOUT))
-until curl -fsS "${URL}/subjects" >/dev/null 2>&1; do
+until curl -fsS --max-time 5 "${URL}/subjects" >/dev/null 2>&1; do
   if [[ "$(docker inspect -f '{{.State.Running}}' "${REGISTRY}")" != "true" ]]; then
     fail "Schema Registry exited during startup"
   fi
@@ -82,19 +82,25 @@ echo "PASS: Schema Registry is serving requests"
 echo "=== Registering and reading back a schema ==="
 SCHEMA='{"type":"record","name":"Smoke","fields":[{"name":"id","type":"string"}]}'
 BODY=$(jq -cn --arg schema "${SCHEMA}" '{schema: $schema}')
-REGISTERED=$(curl -fsS -X POST -H 'Content-Type: application/vnd.schemaregistry.v1+json' \
+REGISTERED=$(curl -fsS --max-time 30 -X POST -H 'Content-Type: application/vnd.schemaregistry.v1+json' \
   --data "${BODY}" "${URL}/subjects/runtime-smoke-value/versions") \
   || fail "schema registration request failed"
 ID=$(jq -er '.id' <<<"${REGISTERED}") || fail "registration response has no id: ${REGISTERED}"
-FETCHED=$(curl -fsS "${URL}/schemas/ids/${ID}" | jq -er '.schema') \
+FETCHED=$(curl -fsS --max-time 10 "${URL}/schemas/ids/${ID}" | jq -er '.schema') \
   || fail "could not fetch schema id ${ID}"
 if [[ "$(jq -cS . <<<"${FETCHED}")" != "$(jq -cS . <<<"${SCHEMA}")" ]]; then
   fail "fetched schema ${FETCHED} does not match registered ${SCHEMA}"
 fi
 echo "PASS: registered and fetched schema id ${ID}"
 
-if docker logs "${REGISTRY}" 2>&1 | grep -Eq \
-  'ClassNotFoundException|NoClassDefFoundError|NoSuchMethodError|LinkageError|UnsupportedClassVersionError'; then
+# Capture the log first: with pipefail, `docker logs | grep -q` reports
+# failure when grep exits on the first match and docker logs gets SIGPIPE.
+REGISTRY_LOG=$(docker logs "${REGISTRY}" 2>&1)
+CLASS_ERRORS=$(grep -E \
+  'ClassNotFoundException|NoClassDefFoundError|NoSuchMethodError|LinkageError|UnsupportedClassVersionError' \
+  <<<"${REGISTRY_LOG}" || true)
+if [[ -n "${CLASS_ERRORS}" ]]; then
+  head -20 <<<"${CLASS_ERRORS}" >&2
   fail "Schema Registry log contains class-loading errors"
 fi
 echo "PASS: no class-loading errors in the Schema Registry log"

@@ -18,6 +18,8 @@ change when image startup, classpath, publishing, or release behavior changes.
 - Renovate intentionally changes only `CP_VERSION` or `IAM_AUTH_VERSION`, and
   its custom-manager PRs intentionally do not automerge. Supply the companion
   digest or checksum instead of weakening the failing integrity gate.
+- Exception: Renovate may automerge the test-only `KAFKA_IMAGE` in
+  `scripts/test-runtime.sh`; CI runs the smoke test against the update.
 - `IMAGE_VERSION` is this image's release version, not the embedded Confluent
   version. Keep its major/minor line compatible with Confluent, use an unused
   patch version for packaging-only fixes, and tag it exactly as
