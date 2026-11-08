@@ -18,10 +18,16 @@ Published to **`ghcr.io/chenrui333/schema-registry-iam`**.
 | Confluent Platform (Schema Registry) | `8.4.0` | [Docker Hub](https://hub.docker.com/r/confluentinc/cp-schema-registry) |
 | aws-msk-iam-auth | `2.3.9` | [GitHub releases](https://github.com/aws/aws-msk-iam-auth/releases) |
 
-Override at build time:
+Override at build time. `CP_VERSION` and `CP_DIGEST`, and `IAM_AUTH_VERSION`
+and `IAM_AUTH_JAR_SHA256`, must change together; see [CLAUDE.md](CLAUDE.md)
+for how to derive the digest and checksum:
 
 ```bash
-docker build --build-arg IMAGE_VERSION=8.4.0 --build-arg CP_VERSION=8.4.0 --build-arg IAM_AUTH_VERSION=2.3.9 .
+docker build \
+  --build-arg IMAGE_VERSION=<image-version> \
+  --build-arg CP_VERSION=<cp-version> --build-arg CP_DIGEST=sha256:<manifest-list-digest> \
+  --build-arg IAM_AUTH_VERSION=<iam-version> --build-arg IAM_AUTH_JAR_SHA256=<jar-sha256> \
+  .
 ```
 
 ## How the image is built

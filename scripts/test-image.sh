@@ -69,8 +69,8 @@ fi
 
 echo ""
 echo "=== Checking final image user ==="
-CONFIG_USER=$(docker image inspect --format '{{.Config.User}}' "${IMAGE}")
-RUNTIME_USER=$(docker run --rm --entrypoint id "${IMAGE}" -un)
+CONFIG_USER=$(docker image inspect --format '{{.Config.User}}' "${IMAGE}" || true)
+RUNTIME_USER=$(docker run --rm --entrypoint id "${IMAGE}" -un || true)
 if [[ "${CONFIG_USER}" == "1000" && "${RUNTIME_USER}" == "appuser" ]]; then
   pass "final user: ${CONFIG_USER} (${RUNTIME_USER})"
 else
