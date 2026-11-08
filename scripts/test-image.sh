@@ -5,7 +5,8 @@
 #   1. aws-msk-iam-auth JAR exists in the Schema Registry classpath
 #   2. The same JAR is linked into Confluent's kafka-ready classpath
 #   3. IAMLoginModule and IAMClientCallbackHandler load on both classpaths
-#   4. The real entrypoint reaches Kafka instead of failing class loading
+#   4. The final image user is the numeric non-root appuser UID
+#   5. The real entrypoint reaches Kafka instead of failing class loading
 #
 # Usage:
 #   ./scripts/test-image.sh [--skip-build] [image-tag]
@@ -64,6 +65,16 @@ if PREFLIGHT_JAR=$(docker run --rm --entrypoint sh "${IMAGE}" -c '
   pass "kafka-ready JAR link: ${PREFLIGHT_JAR}"
 else
   fail "aws-msk-iam-auth JAR is not linked into /usr/share/java/cp-base-java-micro/"
+fi
+
+echo ""
+echo "=== Checking final image user ==="
+CONFIG_USER=$(docker image inspect --format '{{.Config.User}}' "${IMAGE}" || true)
+RUNTIME_USER=$(docker run --rm --entrypoint id "${IMAGE}" -un || true)
+if [[ "${CONFIG_USER}" == "1000" && "${RUNTIME_USER}" == "appuser" ]]; then
+  pass "final user: ${CONFIG_USER} (${RUNTIME_USER})"
+else
+  fail "final user must be numeric UID 1000 (appuser); got '${CONFIG_USER}' (${RUNTIME_USER})"
 fi
 
 echo ""

@@ -35,6 +35,7 @@ Published to `ghcr.io/chenrui333/schema-registry-iam`.
    docker build --no-cache -f - . <<'EOF'
    FROM confluentinc/cp-schema-registry:<VER>
    ADD https://github.com/aws/aws-msk-iam-auth/releases/download/v<IAM_VER>/aws-msk-iam-auth-<IAM_VER>-all.jar /tmp/iam.jar
+   USER 0
    RUN sha256sum /tmp/iam.jar
    EOF
    ```
@@ -81,9 +82,11 @@ Does NOT test live MSK connectivity.
 - **`IAM_AUTH_JAR_SHA256`** — integrity check for the downloaded JAR. Build
   fails if this doesn't match. Never remove or skip the verification.
 - **JAR classpaths** — Schema Registry loads the JAR from
-  `/usr/share/java/schema-registry/`, while Confluent 8.3's `kafka-ready`
-  preflight loads it through the symlink in `/usr/share/java/cp-base-java-micro/`.
-  Both paths are required.
+  `/usr/share/java/schema-registry/`, while the `kafka-ready` preflight in
+  Confluent 8.3 and 8.4 (`UB_DEFAULT_CLASSPATH`) loads it through the symlink in
+  `/usr/share/java/cp-base-java-micro/`. Both paths are required.
+- **Final image user** — `USER 1000` (upstream `appuser`), numeric like the
+  base image so Kubernetes `runAsNonRoot` works. `just test` asserts it.
 - **Workflow permissions** — kept minimal (`contents: read`, `packages: write`).
   Do not add unnecessary permissions.
 - **OCI labels** — used by GHCR for package metadata display.
