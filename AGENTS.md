@@ -59,9 +59,11 @@ change when image startup, classpath, publishing, or release behavior changes.
 - Pin third-party actions to full commit SHAs and keep
   `actions/checkout` credentials disabled with `persist-credentials: false`.
 - Keep `permissions: {}` at workflow level and minimal job permissions.
-  `contents: write` belongs only in the `github-release` job, which runs no
-  third-party actions or build steps; do not broaden repository or package
-  permissions to fix an unrelated workflow failure.
+  `packages: write` belongs only in push/tag publishing jobs (`publish.yml`
+  `publish`, `release.yml` `publish`), never in a job that runs for pull
+  requests. `contents: write` belongs only in the `github-release` job, which
+  runs no third-party actions or build steps; do not broaden repository or
+  package permissions to fix an unrelated workflow failure.
 - Keep PR workflows build-and-test only. Publishing is limited to `main` pushes
   and release tags.
 - Preserve the concurrency policy: superseded PR runs may be canceled, but an

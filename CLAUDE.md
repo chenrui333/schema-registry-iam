@@ -70,7 +70,7 @@ Does NOT test live MSK connectivity or IAM authentication.
 - **Tag convention**: tags track `IMAGE_VERSION` — `v<IMAGE_VERSION>` (e.g. `v8.3.1`). Major/minor track the compatible Confluent line; patch versions identify image releases and may differ from the embedded Confluent patch.
 - Tag releases also create a GitHub Release with generated notes and prepended GHCR pull commands
 - Pull requests → lint, build + test only (no push)
-- The `lint` job runs `just lint` with the `mise.toml` tool versions; `build-and-publish` needs it
+- The `lint` job runs `just lint` with the `mise.toml` tool versions; `build-and-publish` (build + test, read-only token, a required check) needs it; the push-only `publish` job needs `build-and-publish` and alone holds `packages: write`
 - Published images are multi-arch (`linux/amd64`, `linux/arm64`)
 - If repository-level immutable releases are enabled, published GitHub Releases become immutable after creation
 
@@ -94,7 +94,8 @@ Does NOT test live MSK connectivity or IAM authentication.
 - **Final image user** — `USER 1000` (upstream `appuser`), numeric like the
   base image so Kubernetes `runAsNonRoot` works. `just test` asserts it.
 - **Workflow permissions** — `permissions: {}` at workflow level; jobs get only
-  what they use (`contents: read`, `packages: write`). Only the release
-  workflow's `github-release` job has `contents: write`. `zizmor` in
-  `just lint` checks this.
+  what they use. `packages: write` only in push/tag publishing jobs, never in
+  jobs that run for pull requests; only the release workflow's
+  `github-release` job has `contents: write`. `zizmor` in `just lint` checks
+  this.
 - **OCI labels** — used by GHCR for package metadata display.

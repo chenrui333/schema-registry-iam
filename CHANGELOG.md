@@ -30,6 +30,7 @@ of this image and may differ from the embedded Confluent patch version.
 
 - CI: workflows default to `permissions: {}`; the release workflow splits into a `publish` job (`contents: read`, `packages: write`) and a `github-release` job that alone holds `contents: write` and runs no third-party actions
 - Docs: clarify that MSK IAM does not authenticate or authorize REST clients; explicit assume-role configuration now disables fallback to a different AWS principal
+- CI: `publish.yml` moves the GHCR login and push into a push-only `publish` job; `build-and-publish` (which also runs for pull requests) now has only `contents: read`
 
 ## [8.4.0] - 2026-11-08
 
