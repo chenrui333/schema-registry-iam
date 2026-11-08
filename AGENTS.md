@@ -31,10 +31,11 @@ change when image startup, classpath, publishing, or release behavior changes.
   that same file into `/usr/share/java/cp-base-java-micro/`; do not create a
   separately downloaded or unverified preflight copy.
 - When changing the Confluent major/minor line, re-check the upstream
-  `kafka-ready` classpath and real entrypoint behavior. Do not assume the 8.3
-  preflight path remains valid in a later line.
-- Keep `appuser` as the final image user; switch to root only for installation
-  and permission changes.
+  `kafka-ready` classpath (`UB_DEFAULT_CLASSPATH`) and real entrypoint behavior.
+  Do not assume the 8.3/8.4 preflight path remains valid in a later line.
+- Keep `appuser` as the final image user, by numeric UID (`USER 1000`) to match
+  the base image; switch to root (`USER 0`) only for installation and
+  permission changes.
 - Preserve the real-entrypoint regression test. An offline pass requires a
   nonzero exit at the deliberately unreachable Kafka check with no class,
   linkage, or Java-version error; a standalone classpath probe is not enough.

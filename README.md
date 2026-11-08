@@ -14,14 +14,14 @@ Published to **`ghcr.io/chenrui333/schema-registry-iam`**.
 
 | Component | Version | Source |
 |---|---|---|
-| schema-registry-iam image | `8.3.1` | [GitHub releases](https://github.com/chenrui333/schema-registry-iam/releases) |
-| Confluent Platform (Schema Registry) | `8.3.0` | [Docker Hub](https://hub.docker.com/r/confluentinc/cp-schema-registry) |
-| aws-msk-iam-auth | `2.3.7` | [GitHub releases](https://github.com/aws/aws-msk-iam-auth/releases) |
+| schema-registry-iam image | `8.4.0` | [GitHub releases](https://github.com/chenrui333/schema-registry-iam/releases) |
+| Confluent Platform (Schema Registry) | `8.4.0` | [Docker Hub](https://hub.docker.com/r/confluentinc/cp-schema-registry) |
+| aws-msk-iam-auth | `2.3.9` | [GitHub releases](https://github.com/aws/aws-msk-iam-auth/releases) |
 
 Override at build time:
 
 ```bash
-docker build --build-arg IMAGE_VERSION=8.3.1 --build-arg CP_VERSION=8.3.0 --build-arg IAM_AUTH_VERSION=2.3.7 .
+docker build --build-arg IMAGE_VERSION=8.4.0 --build-arg CP_VERSION=8.4.0 --build-arg IAM_AUTH_VERSION=2.3.9 .
 ```
 
 ## How the image is built
@@ -32,8 +32,9 @@ The Dockerfile:
 2. Downloads the `aws-msk-iam-auth` uber-JAR into the Schema Registry runtime
    classpath at `/usr/share/java/schema-registry/`
 3. Links the verified JAR into `/usr/share/java/cp-base-java-micro/`, which
-   Confluent 8.3 uses for its `kafka-ready` preflight
-4. Sets correct file permissions
+   Confluent 8.3 and 8.4 use for their `kafka-ready` preflight
+4. Sets correct file permissions and restores the upstream numeric non-root
+   user (`1000`, `appuser`)
 
 No upstream source is forked or patched.
 
@@ -80,8 +81,8 @@ Tag releases generate GitHub release notes automatically and prepend GHCR pull
 commands such as:
 
 ```bash
-docker pull ghcr.io/chenrui333/schema-registry-iam:8.3.1
-docker pull ghcr.io/chenrui333/schema-registry-iam:8.3
+docker pull ghcr.io/chenrui333/schema-registry-iam:8.4.0
+docker pull ghcr.io/chenrui333/schema-registry-iam:8.4
 docker pull ghcr.io/chenrui333/schema-registry-iam:latest
 ```
 
@@ -108,7 +109,7 @@ docker pull ghcr.io/chenrui333/schema-registry-iam:latest
 Or pin to a specific version:
 
 ```bash
-docker pull ghcr.io/chenrui333/schema-registry-iam:8.3.1
+docker pull ghcr.io/chenrui333/schema-registry-iam:8.4.0
 ```
 
 ## Required IAM environment variables

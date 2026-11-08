@@ -9,6 +9,15 @@ of this image and may differ from the embedded Confluent patch version.
 
 ## [Unreleased]
 
+## [8.4.0] - 2026-11-08
+
+### Changed
+
+- Bump `confluentinc/cp-schema-registry` base image from `8.3.0` to `8.4.0` and refresh `CP_DIGEST` ([#52](https://github.com/chenrui333/schema-registry-iam/pull/52), [#61](https://github.com/chenrui333/schema-registry-iam/pull/61))
+- Bump `aws-msk-iam-auth` from `2.3.7` to `2.3.9` and refresh `IAM_AUTH_JAR_SHA256` ([#55](https://github.com/chenrui333/schema-registry-iam/pull/55), [#61](https://github.com/chenrui333/schema-registry-iam/pull/61))
+- Set the final image user to the upstream numeric UID `1000` (`appuser`) instead of the user name, so Kubernetes `runAsNonRoot` can verify it; CI now asserts it
+- Bump pinned `just`, `hadolint`, and GitHub Actions for Docker build/publish workflows
+
 ## [8.3.1] - 2026-07-26
 
 ### Fixed
@@ -78,7 +87,8 @@ of this image and may differ from the embedded Confluent patch version.
 
 ---
 
-[Unreleased]: https://github.com/chenrui333/schema-registry-iam/compare/v8.3.1...HEAD
+[Unreleased]: https://github.com/chenrui333/schema-registry-iam/compare/v8.4.0...HEAD
+[8.4.0]: https://github.com/chenrui333/schema-registry-iam/releases/tag/v8.4.0
 [8.3.1]: https://github.com/chenrui333/schema-registry-iam/releases/tag/v8.3.1
 [8.3.0]: https://github.com/chenrui333/schema-registry-iam/releases/tag/v8.3.0
 [8.2.0]: https://github.com/chenrui333/schema-registry-iam/releases/tag/v8.2.0
