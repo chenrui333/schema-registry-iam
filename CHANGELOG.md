@@ -13,6 +13,11 @@ of this image and may differ from the embedded Confluent patch version.
 
 - CI: `lint` job runs `just lint` (`shellcheck`, `hadolint` from `mise.toml`) on PRs and `main`; `build-and-publish` requires it
 
+### Changed
+
+- Verify the IAM auth JAR with `ADD --checksum` and set its mode with `ADD --chmod`, dropping the `RUN sha256sum`/`chmod` layer that stored a second 10.2 MB copy of the JAR
+- Skip the BuildKit `SecretsUsedInArgOrEnv` check, which flagged the public `IAM_AUTH_JAR_SHA256` checksum
+
 ## [8.4.0] - 2026-11-08
 
 ### Changed
