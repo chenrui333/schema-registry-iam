@@ -14,7 +14,7 @@ Published to **`ghcr.io/chenrui333/schema-registry-iam`**.
 
 | Component | Version | Source |
 |---|---|---|
-| schema-registry-iam image | `8.4.0` | [GitHub releases](https://github.com/chenrui333/schema-registry-iam/releases) |
+| schema-registry-iam image | `8.4.1` | [GitHub releases](https://github.com/chenrui333/schema-registry-iam/releases) |
 | Confluent Platform (Schema Registry) | `8.4.0` | [Docker Hub](https://hub.docker.com/r/confluentinc/cp-schema-registry) |
 | aws-msk-iam-auth | `2.3.9` | [GitHub releases](https://github.com/aws/aws-msk-iam-auth/releases) |
 
@@ -95,7 +95,7 @@ Tag releases generate GitHub release notes automatically and prepend GHCR pull
 commands such as:
 
 ```bash
-docker pull ghcr.io/chenrui333/schema-registry-iam:8.4.0
+docker pull ghcr.io/chenrui333/schema-registry-iam:8.4.1
 docker pull ghcr.io/chenrui333/schema-registry-iam:8.4
 docker pull ghcr.io/chenrui333/schema-registry-iam:latest
 ```
@@ -123,7 +123,7 @@ docker pull ghcr.io/chenrui333/schema-registry-iam:latest
 Or pin to a specific version:
 
 ```bash
-docker pull ghcr.io/chenrui333/schema-registry-iam:8.4.0
+docker pull ghcr.io/chenrui333/schema-registry-iam:8.4.1
 ```
 
 ## Configuring MSK IAM authentication
