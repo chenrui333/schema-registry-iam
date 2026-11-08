@@ -75,7 +75,7 @@ GitHub Actions uses:
 |---|---|
 | Push to `main` | `latest`, `<sha>` |
 | Push tag `v<IMAGE_VERSION>` | `<IMAGE_VERSION>`, `<major>.<minor>`, `<sha>`, `latest` + GitHub Release |
-| Pull request | Build + test only (no push) |
+| Pull request | Lint, build + test only (no push) |
 
 Release tags use the image project's semantic version. Major and minor versions
 track the compatible Confluent Platform line; patch versions identify image

@@ -60,11 +60,12 @@ Does NOT test live MSK connectivity.
 
 ## How publishing works
 
-- Push to `main` → `.github/workflows/publish.yml` builds, tests, publishes `latest` + `<sha>` tags
+- Push to `main` → `.github/workflows/publish.yml` lints, builds, tests, publishes `latest` + `<sha>` tags
 - Push tag `v*` → `.github/workflows/release.yml` verifies `IMAGE_VERSION`, builds, tests, and publishes semver tags (`8.3.1`, `8.3`) + `latest` + `<sha>`
 - **Tag convention**: tags track `IMAGE_VERSION` — `v<IMAGE_VERSION>` (e.g. `v8.3.1`). Major/minor track the compatible Confluent line; patch versions identify image releases and may differ from the embedded Confluent patch.
 - Tag releases also create a GitHub Release with generated notes and prepended GHCR pull commands
-- Pull requests → build + test only (no push)
+- Pull requests → lint, build + test only (no push)
+- The `lint` job runs `just lint` with the `mise.toml` tool versions; `build-and-publish` needs it
 - Published images are multi-arch (`linux/amd64`, `linux/arm64`)
 - If repository-level immutable releases are enabled, published GitHub Releases become immutable after creation
 
