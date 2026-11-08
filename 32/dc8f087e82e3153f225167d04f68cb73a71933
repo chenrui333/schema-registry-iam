@@ -1,0 +1,14 @@
+Dockerfile
+  h_9df9c32c3f321d 11-12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "32dc8f087e82e3153f225167d04f68cb73a71933",
+  "prompts": {},
+  "humans": {
+    "h_9df9c32c3f321d": {
+      "author": "Rui Chen <rui@chenrui.dev>"
+    }
+  }
+}
