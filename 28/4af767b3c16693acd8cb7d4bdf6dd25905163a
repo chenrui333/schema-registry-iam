@@ -1,0 +1,28 @@
+.github/workflows/publish.yml
+  h_9df9c32c3f321d 16-17,28-29,41
+.github/workflows/release.yml
+  h_9df9c32c3f321d 10-11,13,16-17,130-137
+AGENTS.md
+  h_9df9c32c3f321d 55-58,67-68,71-72
+CHANGELOG.md
+  h_9df9c32c3f321d 16-20
+CLAUDE.md
+  h_9df9c32c3f321d 18-19,94-97
+RELEASE.md
+  h_9df9c32c3f321d 66-67,69-71
+justfile
+  h_9df9c32c3f321d 18,22-23
+mise.toml
+  h_9df9c32c3f321d 5-6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "284af767b3c16693acd8cb7d4bdf6dd25905163a",
+  "prompts": {},
+  "humans": {
+    "h_9df9c32c3f321d": {
+      "author": "Rui Chen <rui@chenrui.dev>"
+    }
+  }
+}
