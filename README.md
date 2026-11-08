@@ -50,6 +50,10 @@ No upstream source is forked or patched.
 just build
 ```
 
+Requires BuildKit (the default `docker build` builder since Docker Engine 23,
+or `docker buildx build`). The Dockerfile pins its frontend with a `# syntax`
+directive; the legacy builder (`DOCKER_BUILDKIT=0`) is not supported.
+
 ## Validate locally
 
 ```bash

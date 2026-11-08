@@ -30,12 +30,14 @@ Published to `ghcr.io/chenrui333/schema-registry-iam`.
    ```
 5. If `IAM_AUTH_VERSION` changed, update `IAM_AUTH_JAR_SHA256`. The checksum
    must match the bytes Docker `ADD` downloads (not a host-side download).
-   `ADD --checksum` verifies it, so build once with the old checksum and copy
-   the first digest from the error:
+   `ADD --checksum` verifies it: after setting the new `IAM_AUTH_VERSION` in
+   the Dockerfile (step 3), build with BuildKit and keep the old checksum. The
+   build fails with the downloaded digest first:
    ```bash
-   docker build --no-cache . 2>&1 | grep -m1 'digest mismatch'
+   docker build --no-cache .
    # ERROR: digest mismatch sha256:<downloaded>: sha256:<expected>
    ```
+   Any other build error means the download itself failed; fix that first.
 6. Run `just test` — all checks must pass
 7. Commit, tag (`v<IMAGE_VERSION>`), and push
 

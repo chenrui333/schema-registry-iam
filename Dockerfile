@@ -1,5 +1,8 @@
+# syntax=docker/dockerfile:1.27.1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
 # check=skip=SecretsUsedInArgOrEnv
-# IAM_AUTH_JAR_SHA256 is a public artifact checksum, not a secret.
+# The pinned frontend provides ADD --checksum/--chmod on any BuildKit builder
+# (the legacy builder is unsupported). IAM_AUTH_JAR_SHA256 is a public artifact
+# checksum, not a secret.
 #
 # Custom Confluent Schema Registry image with AWS MSK IAM auth support.
 #
