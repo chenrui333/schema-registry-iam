@@ -13,6 +13,11 @@ of this image and may differ from the embedded Confluent patch version.
 
 - CI: `lint` job runs `just lint` (`shellcheck`, `hadolint` from `mise.toml`) on PRs and `main`; `build-and-publish` requires it
 - Test: `scripts/test-runtime.sh` starts Schema Registry against a local PLAINTEXT Kafka (`apache/kafka:4.4.0`, digest-pinned), registers a schema, reads it back, and fails on class-loading errors; `just test`, `just validate`, and the amd64 CI/release builds run it
+- CI: `just lint` also runs `actionlint` and `zizmor --offline` on the workflows (pinned in `mise.toml`)
+
+### Security
+
+- CI: workflows default to `permissions: {}`; the release workflow splits into a `publish` job (`contents: read`, `packages: write`) and a `github-release` job that alone holds `contents: write` and runs no third-party actions
 
 ### Changed
 
