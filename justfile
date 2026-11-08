@@ -15,10 +15,12 @@ validate image_ref:
     ./scripts/test-image.sh --skip-build {{ image_ref }}
     ./scripts/test-runtime.sh {{ image_ref }}
 
-# Run shellcheck and hadolint (requires shellcheck and hadolint on PATH)
+# Lint scripts, Dockerfile, and workflows (tools pinned in mise.toml)
 lint:
     shellcheck scripts/*.sh
     hadolint Dockerfile
+    actionlint
+    zizmor --offline .github/workflows
 
 # Remove the test image
 clean:

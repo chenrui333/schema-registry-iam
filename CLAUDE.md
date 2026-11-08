@@ -15,8 +15,8 @@ Published to `ghcr.io/chenrui333/schema-registry-iam`.
 | `README.md` | User-facing docs, env vars, consuming the image |
 | `CHANGELOG.md` | Release history following Keep a Changelog format |
 | `RELEASE.md` | Release runbook — pre-release checklist and tag instructions |
-| `justfile` | Local dev commands (`just build`, `just test`, `just lint`, `just clean`) |
-| `mise.toml` | Toolchain — pins `just`, `shellcheck`, `hadolint` via mise |
+| `justfile` | Local dev commands (`just build`, `just test`, `just validate`, `just lint`, `just clean`) |
+| `mise.toml` | Toolchain — pins `just`, `shellcheck`, `hadolint`, `actionlint`, `zizmor` via mise |
 | `renovate.json` | Automated dependency updates for base image and IAM JAR |
 
 ## How to update to a new upstream release
@@ -90,6 +90,8 @@ Does NOT test live MSK connectivity or IAM authentication.
   `/usr/share/java/cp-base-java-micro/`. Both paths are required.
 - **Final image user** — `USER 1000` (upstream `appuser`), numeric like the
   base image so Kubernetes `runAsNonRoot` works. `just test` asserts it.
-- **Workflow permissions** — kept minimal (`contents: read`, `packages: write`).
-  Do not add unnecessary permissions.
+- **Workflow permissions** — `permissions: {}` at workflow level; jobs get only
+  what they use (`contents: read`, `packages: write`). Only the release
+  workflow's `github-release` job has `contents: write`. `zizmor` in
+  `just lint` checks this.
 - **OCI labels** — used by GHCR for package metadata display.

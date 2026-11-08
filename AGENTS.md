@@ -55,20 +55,25 @@ change when image startup, classpath, publishing, or release behavior changes.
 
 - Pin third-party actions to full commit SHAs and keep
   `actions/checkout` credentials disabled with `persist-credentials: false`.
-- Keep job permissions minimal. `contents: write` belongs only in the release
-  job; do not broaden repository or package permissions to fix an unrelated
-  workflow failure.
+- Keep `permissions: {}` at workflow level and minimal job permissions.
+  `contents: write` belongs only in the `github-release` job, which runs no
+  third-party actions or build steps; do not broaden repository or package
+  permissions to fix an unrelated workflow failure.
 - Keep PR workflows build-and-test only. Publishing is limited to `main` pushes
   and release tags.
-- Preserve the concurrency policy: superseded PR runs may be canceled, but
-  `main` publish runs must queue rather than cancel one another.
+- Preserve the concurrency policy: superseded PR runs may be canceled, but an
+  in-progress `main` publish run is never canceled. GitHub keeps only one
+  pending run per group, so in a burst of `main` pushes the intermediate
+  pending runs are replaced and those commits get no `<sha>` tag; the newest
+  commit still publishes `latest`.
 
 ## Validation by change type
 
 - Dockerfile or test script: `just lint && just test`.
-- GitHub Actions: `actionlint .github/workflows/*.yml`. `actionlint` is not
-  supplied by `mise.toml` and must be installed separately.
+- GitHub Actions: `just lint` (runs `actionlint` and `zizmor --offline`; tools
+  pinned in `mise.toml`).
 - Every change: `git diff --check`.
 
-Before merging, verify `build-and-publish` passed for the current PR head.
+Before merging, verify `lint` and `build-and-publish` passed for the current PR
+head.
 Commits must include a DCO `Signed-off-by` trailer.

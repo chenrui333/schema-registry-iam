@@ -7,11 +7,14 @@ on:
 env:
   IMAGE_NAME: ghcr.io/chenrui333/schema-registry-iam
 
+permissions: {}
+
 jobs:
-  release:
+  publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      # read the tag's source; packages: push the release image to GHCR
+      contents: read
       packages: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -124,6 +127,14 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+  # Only this job can write repository contents, and it runs no third-party
+  # actions or build steps.
+  github-release:
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # create the GitHub Release
+    steps:
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ github.token }}

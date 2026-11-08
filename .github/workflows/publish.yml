@@ -13,6 +13,8 @@ concurrency:
   group: publish-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
+permissions: {}
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -23,7 +25,8 @@ jobs:
         with:
           persist-credentials: false
 
-      # Installs the just, shellcheck, and hadolint versions pinned in mise.toml.
+      # Installs the tool versions pinned in mise.toml (just, shellcheck,
+      # hadolint, actionlint, zizmor).
       - name: Set up mise
         uses: jdx/mise-action@b44d12e7d0d8ee7461bb893e1b1993500433185b # v5.2.7
 
@@ -35,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write
+      packages: write # push latest/<sha> on main; PR runs never log in
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:

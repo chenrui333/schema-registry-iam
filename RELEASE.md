@@ -63,9 +63,12 @@ On a `v*` tag push, `release.yml`:
 
 1. Verifies the tag matches `IMAGE_VERSION`
 2. Verifies `CP_DIGEST` matches the registry
-3. Builds and validates `linux/amd64` and `linux/arm64` images
+3. Builds and validates `linux/amd64` and `linux/arm64` images, and runs the
+   runtime smoke test on amd64
 4. Pushes to GHCR with tags: `<IMAGE_VERSION>`, `<major>.<minor>`, `latest`, `<sha>`
-5. Creates a GitHub Release with auto-generated notes prepended with GHCR pull commands
+   (`publish` job: `contents: read`, `packages: write`)
+5. Creates a GitHub Release with auto-generated notes prepended with GHCR pull
+   commands (`github-release` job: `contents: write`, no build steps)
 
 ## Notes
 
