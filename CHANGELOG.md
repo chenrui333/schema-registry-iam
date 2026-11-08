@@ -18,6 +18,11 @@ of this image and may differ from the embedded Confluent patch version.
 
 - Verify the IAM auth JAR with `ADD --checksum` and set its mode with `ADD --chmod`, dropping the `RUN sha256sum`/`chmod` layer that stored a second 10.2 MB copy of the JAR
 - Skip the BuildKit `SecretsUsedInArgOrEnv` check, which flagged the public `IAM_AUTH_JAR_SHA256` checksum
+- Renovate: one regex manager now updates `CP_VERSION` and `CP_DIGEST` together, and the dockerfile manager is disabled for the base image. Base image PRs previously changed only `CP_VERSION` and a separate digest PR followed (#52, #61), so every bump started with failing CI.
+
+### Fixed
+
+- README "Updating versions" omitted the digest, checksum, and changelog steps; it now points to `CLAUDE.md` and `RELEASE.md`
 
 ## [8.4.0] - 2026-11-08
 
