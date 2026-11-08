@@ -61,8 +61,12 @@ This verifies:
 - `aws-msk-iam-auth` is available to both runtime and preflight classpaths
 - `IAMLoginModule` and `IAMClientCallbackHandler` are loadable from each classpath
 - The real Confluent entrypoint loads the IAM configuration before reaching Kafka
+- Schema Registry starts against a local PLAINTEXT Kafka
+  (`scripts/test-runtime.sh`), registers a schema, and reads it back without
+  class-loading errors
 
-It does **not** test live MSK connectivity (see [What remains unverified](#what-remains-unverified)).
+It does **not** test live MSK connectivity or IAM authentication (see
+[What remains unverified](#what-remains-unverified)).
 
 ## Publishing and releases
 

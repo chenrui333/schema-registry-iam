@@ -74,6 +74,11 @@ jobs:
       - name: Validate image (amd64)
         run: ./scripts/test-image.sh --skip-build ${{ env.IMAGE_NAME }}:test-amd64
 
+      # Start Schema Registry against a local PLAINTEXT Kafka and use the
+      # REST API. Runs natively on amd64 only; QEMU is too slow for two JVMs.
+      - name: Runtime smoke test (amd64)
+        run: ./scripts/test-runtime.sh "${IMAGE_NAME}:test-amd64"
+
       # Build arm64 image under QEMU and load it for testing.
       - name: Build image (arm64)
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0

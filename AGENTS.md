@@ -42,6 +42,9 @@ change when image startup, classpath, publishing, or release behavior changes.
 - In CI, validate each loaded architecture image with `--skip-build` so the test
   cannot silently rebuild a different artifact. Test both `linux/amd64` and
   `linux/arm64` before publishing the multi-architecture manifest.
+- Keep the amd64 runtime smoke test (`scripts/test-runtime.sh`) before
+  publishing. It proves Schema Registry starts and serves requests with the IAM
+  JAR on its classpath; keep `KAFKA_IMAGE` digest-pinned.
 - Local and PR tests do not prove an IAM handshake, `_schemas` access, or HA.
   Do not claim those behaviors are verified without an IAM-enabled MSK test.
 
