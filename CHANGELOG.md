@@ -9,6 +9,10 @@ of this image and may differ from the embedded Confluent patch version.
 
 ## [Unreleased]
 
+### Added
+
+- CI: `lint` job runs `just lint` (`shellcheck`, `hadolint` from `mise.toml`) on PRs and `main`; `build-and-publish` requires it
+
 ## [8.4.0] - 2026-11-08
 
 ### Changed
