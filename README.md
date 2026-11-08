@@ -36,11 +36,11 @@ The Dockerfile:
 
 1. Starts `FROM confluentinc/cp-schema-registry:<CP_VERSION>`
 2. Downloads the `aws-msk-iam-auth` uber-JAR into the Schema Registry runtime
-   classpath at `/usr/share/java/schema-registry/`
+   classpath at `/usr/share/java/schema-registry/` with `ADD --checksum`, so
+   the build fails unless the bytes match `IAM_AUTH_JAR_SHA256`
 3. Links the verified JAR into `/usr/share/java/cp-base-java-micro/`, which
    Confluent 8.3 and 8.4 use for their `kafka-ready` preflight
-4. Sets correct file permissions and restores the upstream numeric non-root
-   user (`1000`, `appuser`)
+4. Restores the upstream numeric non-root user (`1000`, `appuser`)
 
 No upstream source is forked or patched.
 
@@ -49,6 +49,10 @@ No upstream source is forked or patched.
 ```bash
 just build
 ```
+
+Requires BuildKit (the default `docker build` builder since Docker Engine 23,
+or `docker buildx build`). The Dockerfile pins its frontend with a `# syntax`
+directive; the legacy builder (`DOCKER_BUILDKIT=0`) is not supported.
 
 ## Validate locally
 

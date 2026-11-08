@@ -20,7 +20,7 @@ patch version; image `8.3.1`, for example, embeds Confluent `8.3.0`.
 
 3. **Sync `IAM_AUTH_VERSION` and `IAM_AUTH_JAR_SHA256`** in `Dockerfile`
 
-   The build-time `sha256sum` check fails if they diverge.
+   The build-time `ADD --checksum` verification fails if they diverge.
    See `CLAUDE.md` for how to compute the correct JAR checksum.
 
 4. **Run local validation**:

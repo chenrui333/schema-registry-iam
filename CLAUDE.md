@@ -30,22 +30,21 @@ Published to `ghcr.io/chenrui333/schema-registry-iam`.
    docker buildx imagetools inspect confluentinc/cp-schema-registry:<VER> | grep Digest
    ```
 5. If `IAM_AUTH_VERSION` changed, update `IAM_AUTH_JAR_SHA256`. The checksum
-   must match what Docker `ADD` downloads (not host curl, which may differ
-   due to encoding). Get it by building a probe image:
+   must match the bytes Docker `ADD` downloads (not a host-side download).
+   `ADD --checksum` verifies it: after setting the new `IAM_AUTH_VERSION` in
+   the Dockerfile (step 3), build with BuildKit and keep the old checksum. The
+   build fails with the downloaded digest first:
    ```bash
-   docker build --no-cache -f - . <<'EOF'
-   FROM confluentinc/cp-schema-registry:<VER>
-   ADD https://github.com/aws/aws-msk-iam-auth/releases/download/v<IAM_VER>/aws-msk-iam-auth-<IAM_VER>-all.jar /tmp/iam.jar
-   USER 0
-   RUN sha256sum /tmp/iam.jar
-   EOF
+   docker build --no-cache .
+   # ERROR: digest mismatch sha256:<downloaded>: sha256:<expected>
    ```
+   Any other build error means the download itself failed; fix that first.
 6. Run `just test` — all checks must pass
 7. Commit, tag (`v<IMAGE_VERSION>`), and push
 
 Renovate auto-opens PRs for version bumps. When it bumps `IAM_AUTH_VERSION`,
 CI will fail until `IAM_AUTH_JAR_SHA256` is updated (this is intentional —
-the checksum prevents publishing an unverified artifact).
+`ADD --checksum` prevents publishing an unverified artifact).
 
 ## How to run local validation
 

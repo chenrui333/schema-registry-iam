@@ -13,8 +13,9 @@ change when image startup, classpath, publishing, or release behavior changes.
   list digest reported by `docker buildx imagetools inspect`; never replace the
   digest-pinned base image with a mutable tag-only reference.
 - Treat `IAM_AUTH_VERSION` and `IAM_AUTH_JAR_SHA256` as one change. The checksum
-  must cover the exact bytes fetched by Docker `ADD`; derive it with the Docker
-  probe in [CLAUDE.md](CLAUDE.md), not a host-side download.
+  must cover the exact bytes fetched by Docker `ADD --checksum`; derive it from
+  the build's `digest mismatch` error as described in [CLAUDE.md](CLAUDE.md),
+  not from a host-side download.
 - Renovate intentionally changes only `CP_VERSION` or `IAM_AUTH_VERSION`, and
   its custom-manager PRs intentionally do not automerge. Supply the companion
   digest or checksum instead of weakening the failing integrity gate.
