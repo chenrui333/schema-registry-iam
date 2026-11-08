@@ -1,0 +1,20 @@
+.github/workflows/publish.yml
+  h_9df9c32c3f321d 36-37,98-116,135
+AGENTS.md
+  h_9df9c32c3f321d 59-63
+CHANGELOG.md
+  h_9df9c32c3f321d 30
+CLAUDE.md
+  h_9df9c32c3f321d 70,94-97
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8c88749dcf960d7a1fd5b0d60b80d3236731badf",
+  "prompts": {},
+  "humans": {
+    "h_9df9c32c3f321d": {
+      "author": "Rui Chen <rui@chenrui.dev>"
+    }
+  }
+}
