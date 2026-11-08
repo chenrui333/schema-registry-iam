@@ -128,10 +128,19 @@ docker pull ghcr.io/chenrui333/schema-registry-iam:8.4.0
 
 ## Configuring MSK IAM authentication
 
-Set these environment variables on the container or task. The upstream
+This image authenticates **Schema Registry to Kafka**, not REST clients to
+Schema Registry. All callers use the registry's AWS identity for Kafka operations;
+their identities are not forwarded to MSK. The default REST listener is
+unauthenticated HTTP. Restrict access with network controls, and configure
+[REST authentication and HTTPS](https://docs.confluent.io/platform/current/schema-registry/security/index.html)
+or an authenticated TLS proxy before exposing it to untrusted clients. Broker
+IAM permissions do not provide per-user or per-subject REST authorization.
+
+Set these literal environment values on the container or task (for example in
+a Docker `--env-file` file, not as unquoted shell assignments). The upstream
 entrypoint also requires `SCHEMA_REGISTRY_HOST_NAME`.
 
-```bash
+```text
 SCHEMA_REGISTRY_HOST_NAME=<address other instances use to reach this one>
 SCHEMA_REGISTRY_LISTENERS=http://0.0.0.0:8081
 
@@ -150,12 +159,18 @@ The IAM login module signs requests with credentials from the
 (for example an ECS task role, EKS IRSA, or an EC2 instance profile). To assume
 a dedicated role, set:
 
-```bash
-SCHEMA_REGISTRY_KAFKASTORE_SASL_JAAS_CONFIG=software.amazon.msk.auth.iam.IAMLoginModule required awsRoleArn="arn:aws:iam::<account>:role/<msk-role>" awsRoleSessionName="schema-registry";
+```text
+SCHEMA_REGISTRY_KAFKASTORE_SASL_JAAS_CONFIG=software.amazon.msk.auth.iam.IAMLoginModule required awsRoleArn="arn:aws:iam::<account>:role/<msk-role>" awsRoleSessionName="schema-registry" awsAddDefaultProviders="false";
 ```
 
+The workload role needs `sts:AssumeRole` permission and the target role must
+trust it. `awsAddDefaultProviders="false"` prevents falling back to the default
+credential chain if assuming that role fails; otherwise authentication could
+succeed as a different principal. Prefer workload roles over static access
+keys; never bake credentials into the image.
+
 Credential providers that generate a new session name on refresh, such as EKS
-Pod Identity, make re-authentication fail with
+Pod Identity, can make re-authentication fail with
 `Cannot change principals during re-authentication`; the fixed
 `awsRoleSessionName` above is the
 [upstream workaround](https://github.com/aws/aws-msk-iam-auth#failure-during-re-authentication-due-to-session-name-change-eks-pod-identityother-credential-providers).
@@ -227,8 +242,9 @@ it has not been verified against a live cluster here.
 
 ## What remains unverified
 
-This repo validates the image build and classpath. The following require a live
-MSK cluster and are **not** tested here:
+The tests validate the image, classpaths, and a REST register/read round trip
+against local PLAINTEXT Kafka. The following require a live MSK cluster and
+are **not** tested here:
 
 - IAM authentication handshake with MSK brokers
 - `_schemas` topic creation/access via IAM policy, including the policy above
