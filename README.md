@@ -194,9 +194,13 @@ Schema Registry needs these MSK actions. With default settings:
 }
 ```
 
-If you set `SCHEMA_REGISTRY_KAFKASTORE_TOPIC`,
+If you pre-create `_schemas` (one partition, `cleanup.policy=compact`), remove
+`kafka-cluster:CreateTopic` from the topic statement. If you set
+`SCHEMA_REGISTRY_KAFKASTORE_TOPIC`,
 `SCHEMA_REGISTRY_SCHEMA_REGISTRY_GROUP_ID`, or
 `SCHEMA_REGISTRY_KAFKASTORE_GROUP_ID`, change the topic and group ARNs to
+match. Idempotent (non-transactional) writes need no transactional-ID
+permissions.
 match. This list comes from the Schema Registry 8.4 source (`KafkaStore`,
 `KafkaStoreReaderThread`, `SchemaRegistryConfig`) and the
 [MSK IAM action semantics](https://docs.aws.amazon.com/msk/latest/developerguide/kafka-actions.html);
