@@ -160,9 +160,10 @@ MSK cluster and are **not** tested here:
 ## Updating versions
 
 [Renovate](https://docs.renovatebot.com/) opens PRs when new versions of the
-base image or `aws-msk-iam-auth` are released. Base image PRs update
-`CP_VERSION` and `CP_DIGEST` together; `aws-msk-iam-auth` PRs need a manual
-`IAM_AUTH_JAR_SHA256` update. Neither automerges.
+base image or `aws-msk-iam-auth` are released. Base image version PRs update
+`CP_VERSION` and `CP_DIGEST` together, and a re-pushed upstream tag produces a
+digest-only PR; `aws-msk-iam-auth` PRs need a manual `IAM_AUTH_JAR_SHA256`
+update. None of them automerge.
 
 To update manually, follow [CLAUDE.md](CLAUDE.md) for the version, digest, and
 checksum changes, then [RELEASE.md](RELEASE.md) to update `CHANGELOG.md`,

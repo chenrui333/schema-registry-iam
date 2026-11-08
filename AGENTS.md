@@ -17,10 +17,11 @@ change when image startup, classpath, publishing, or release behavior changes.
   the build's `digest mismatch` error as described in [CLAUDE.md](CLAUDE.md),
   not from a host-side download.
 - Renovate changes `CP_VERSION` and `CP_DIGEST` together through one regex
-  manager (the dockerfile manager is disabled for the base image), but changes
-  only `IAM_AUTH_VERSION`. Its custom-manager PRs intentionally do not
-  automerge. Supply the companion checksum instead of weakening the failing
-  integrity gate.
+  manager (the dockerfile manager is disabled for the base image), opens a
+  digest-only PR when the upstream tag is re-pushed, and changes only
+  `IAM_AUTH_VERSION` for the IAM JAR. Its Dockerfile custom-manager PRs
+  intentionally do not automerge. Supply the companion checksum instead of
+  weakening the failing integrity gate.
 - Exception: Renovate may automerge the test-only `KAFKA_IMAGE` in
   `scripts/test-runtime.sh`; CI runs the smoke test against the update.
 - `IMAGE_VERSION` is this image's release version, not the embedded Confluent

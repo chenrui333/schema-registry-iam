@@ -26,7 +26,7 @@
         "/^Dockerfile$/"
       ],
       "matchStrings": [
-        "ARG CP_VERSION=(?<currentValue>\\S+)\\n(?:#.*\\n)*ARG CP_DIGEST=(?<currentDigest>sha256:[a-f0-9]{64})"
+        "ARG CP_VERSION=(?<currentValue>\\S+)\\n(?:[ \\t]*(?:#.*)?\\n)*ARG CP_DIGEST=(?<currentDigest>sha256:[a-f0-9]{64})"
       ],
       "depNameTemplate": "confluentinc/cp-schema-registry",
       "datasourceTemplate": "docker",
