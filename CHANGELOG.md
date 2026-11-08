@@ -9,6 +9,8 @@ of this image and may differ from the embedded Confluent patch version.
 
 ## [Unreleased]
 
+## [8.4.1] - 2026-11-08
+
 ### Added
 
 - CI: `lint` job runs `just lint` (`shellcheck`, `hadolint` from `mise.toml`) on PRs and `main`; `build-and-publish` requires it
@@ -29,7 +31,7 @@ of this image and may differ from the embedded Confluent patch version.
 ### Security
 
 - CI: workflows default to `permissions: {}`; the release workflow splits into a `publish` job (`contents: read`, `packages: write`) and a `github-release` job that alone holds `contents: write` and runs no third-party actions
-- Docs: clarify that MSK IAM does not authenticate or authorize REST clients; explicit assume-role configuration now disables fallback to a different AWS principal
+- Docs: clarify that MSK IAM does not authenticate or authorize REST clients; the assume-role example now sets `awsAddDefaultProviders="false"`. Existing configurations must add that option to disable fallback; runtime defaults are unchanged.
 - CI: `publish.yml` moves the GHCR login and push into a push-only `publish` job; `build-and-publish` (which also runs for pull requests) now has only `contents: read`
 
 ## [8.4.0] - 2026-11-08
@@ -110,7 +112,8 @@ of this image and may differ from the embedded Confluent patch version.
 
 ---
 
-[Unreleased]: https://github.com/chenrui333/schema-registry-iam/compare/v8.4.0...HEAD
+[Unreleased]: https://github.com/chenrui333/schema-registry-iam/compare/v8.4.1...HEAD
+[8.4.1]: https://github.com/chenrui333/schema-registry-iam/releases/tag/v8.4.1
 [8.4.0]: https://github.com/chenrui333/schema-registry-iam/releases/tag/v8.4.0
 [8.3.1]: https://github.com/chenrui333/schema-registry-iam/releases/tag/v8.3.1
 [8.3.0]: https://github.com/chenrui333/schema-registry-iam/releases/tag/v8.3.0
