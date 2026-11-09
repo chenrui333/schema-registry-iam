@@ -72,6 +72,14 @@ On a `v*` tag push, `release.yml`:
 
 ## Notes
 
+- **Tested versus published images**: publishing rebuilds the multi-architecture
+  image from the pinned base/frontend and checksum-verified JAR; it does not
+  promote the loaded test images by digest. The separate `main` publishing
+  job also repeats the QEMU build without the test job's local cache. This
+  isolates package-write credentials from PR builds, but does not guarantee
+  byte-identical tested and published manifests. Always run the published-image
+  validation above.
+
 - **Renovate PRs for `CP_VERSION` or `IAM_AUTH_VERSION`** do not automerge.
   `CP_VERSION` PRs include the new `CP_DIGEST`; `IAM_AUTH_VERSION` PRs need a
   manual `IAM_AUTH_JAR_SHA256` update. Either needs a deliberate
