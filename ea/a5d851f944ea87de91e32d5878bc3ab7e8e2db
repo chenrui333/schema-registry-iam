@@ -1,0 +1,14 @@
+RELEASE.md
+  h_9df9c32c3f321d 75-82
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "eaa5d851f944ea87de91e32d5878bc3ab7e8e2db",
+  "prompts": {},
+  "humans": {
+    "h_9df9c32c3f321d": {
+      "author": "Rui Chen <rui@chenrui.dev>"
+    }
+  }
+}
