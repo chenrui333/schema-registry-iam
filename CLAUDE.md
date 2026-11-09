@@ -96,6 +96,7 @@ Does NOT test live MSK connectivity or IAM authentication.
 - **Workflow permissions** — `permissions: {}` at workflow level; jobs get only
   what they use. `packages: write` only in push/tag publishing jobs, never in
   jobs that run for pull requests; only the release workflow's
-  `github-release` job has `contents: write`. `zizmor` in `just lint` checks
-  this.
+  `github-release` job has `contents: write`. Review these job-specific rules
+  on workflow changes; `zizmor` in `just lint` checks general workflow security
+  patterns but does not enforce this permission allocation.
 - **OCI labels** — used by GHCR for package metadata display.

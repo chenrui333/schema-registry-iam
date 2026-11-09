@@ -18,7 +18,7 @@
 #     --build-arg CP_VERSION=<ver> --build-arg CP_DIGEST=sha256:<digest> \
 #     --build-arg IAM_AUTH_VERSION=<ver> --build-arg IAM_AUTH_JAR_SHA256=<sha256> .
 
-ARG IMAGE_VERSION=8.4.0
+ARG IMAGE_VERSION=8.4.1
 ARG CP_VERSION=8.4.0
 # Digest of the manifest list for confluentinc/cp-schema-registry:${CP_VERSION}.
 # Pin to digest so builds are reproducible even if the tag is re-pushed.
