@@ -1,0 +1,14 @@
+CLAUDE.md
+  h_9df9c32c3f321d 99-101
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "89ea4e2997d2c5f81d43b8c8b1d652e7a09eea7d",
+  "prompts": {},
+  "humans": {
+    "h_9df9c32c3f321d": {
+      "author": "Rui Chen <rui@chenrui.dev>"
+    }
+  }
+}
