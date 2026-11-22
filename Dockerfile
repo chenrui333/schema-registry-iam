@@ -19,13 +19,13 @@
 #     --build-arg IAM_AUTH_VERSION=<ver> --build-arg IAM_AUTH_JAR_SHA256=<sha256> .
 
 ARG IMAGE_VERSION=8.4.1
-ARG CP_VERSION=8.4.0
+ARG CP_VERSION=8.4.1
 # Digest of the manifest list for confluentinc/cp-schema-registry:${CP_VERSION}.
 # Pin to digest so builds are reproducible even if the tag is re-pushed.
 # Renovate updates CP_VERSION and CP_DIGEST together; its regex allows only
 # blank or comment lines between them. Manual update:
 #   docker buildx imagetools inspect confluentinc/cp-schema-registry:<VER> | grep Digest
-ARG CP_DIGEST=sha256:12cd2770fa25df65243dabafd5eef5337ea1145a3cb85afc8a27f7151dfa2999
+ARG CP_DIGEST=sha256:f98a61e99848376ba56fe59e98bf7e04fabfd01739c0f29a39041d3ca7bcf61d
 FROM confluentinc/cp-schema-registry:${CP_VERSION}@${CP_DIGEST}
 
 ARG IMAGE_VERSION
